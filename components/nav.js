@@ -1,9 +1,6 @@
-import Link from 'next/link'
-
-const links = [
-  { href: 'https://github.com/vercel/next.js', label: 'GitHub' },
-  { href: 'https://nextjs.org/docs', label: 'Docs' },
-]
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function Nav() {
   return (
@@ -11,21 +8,15 @@ export default function Nav() {
       <ul className="flex items-center justify-between p-8">
         <li>
           <Link href="/">
-            <a className="text-blue-500 no-underline text-accent-1 dark:text-blue-300">
-              Home
+            <a
+              title="home"
+              className="text-blue-500 no-underline text-accent-1 dark:text-blue-300 hover:bg-gray-200 h-14 w-14 flex items-center justify-center rounded-full"
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
             </a>
           </Link>
         </li>
-        <ul className="flex items-center justify-between space-x-4">
-          {links.map(({ href, label }) => (
-            <li key={`${href}${label}`}>
-              <a href={href} className="no-underline btn-blue">
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
       </ul>
     </nav>
-  )
+  );
 }
