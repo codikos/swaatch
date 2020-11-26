@@ -27,42 +27,46 @@ const generatePalette = (color: string, options: Options) => {
 
   if (direction === 'right') {
     return [
-      color,
-      ...Array.from({ length: nbVariation }).map((_, i) =>
-        tinycolor(color)
+      { name: 'base', color },
+      ...Array.from({ length: nbVariation }).map((_, i) => ({
+        name: `darken(${(i + 1) * increment})`,
+        color: tinycolor(color)
           .darken((i + 1) * increment)
           .toHex(),
-      ),
+      })),
     ];
   }
 
   if (direction === 'left') {
     return [
       ...Array.from({ length: nbVariation })
-        .map((_, i) =>
-          tinycolor(color)
+        .map((_, i) => ({
+          name: `darken(${(i + 1) * increment})`,
+          color: tinycolor(color)
             .lighten((i + 1) * increment)
             .toHex(),
-        )
+        }))
         .reverse(),
-      color,
+      { name: 'base', color },
     ];
   }
 
   return [
     ...Array.from({ length: Math.floor(nbVariation / 2) })
-      .map((_, i) =>
-        tinycolor(color)
+      .map((_, i) => ({
+        name: `darken(${(i + 1) * increment})`,
+        color: tinycolor(color)
           .lighten((i + 1) * increment)
           .toHex(),
-      )
+      }))
       .reverse(),
-    color,
-    ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) =>
-      tinycolor(color)
+    { name: 'base', color },
+    ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) => ({
+      name: `darken(${(i + 1) * increment})`,
+      color: tinycolor(color)
         .darken((i + 1) * increment)
         .toHex(),
-    ),
+    })),
   ];
 };
 
@@ -95,12 +99,15 @@ const Input = ({ label, name, placeholder, size, onChange, value }: InputProps) 
   </div>
 );
 
-const ColorCard = ({ color }) => (
+const ColorCard = ({ color, name }) => (
   <div className="mx-2 border border-gray-200 rounded overflow-hidden">
     <div className="w-28 h-28" style={{ backgroundColor: `#${color}` }}></div>
     <div className="bg-white px-4 py-2 text-center">
-      <span className="text-blue-500">#</span>
-      {color}
+      <div className="text-gray-500">{name}</div>
+      <div>
+        <span className="text-blue-500">#</span>
+        {color}
+      </div>
     </div>
   </div>
 );
@@ -135,16 +142,16 @@ export default function PrimaryPage() {
           <div className="mt-5">
             <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Primary</h3>
             <div className="flex flex-row justify-center mt-1">
-              {generatePalette(hexValue, { direction: 'right', nbVariation: 6, increment: 3 }).map((value) => (
-                <ColorCard color={value} />
+              {generatePalette(hexValue, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
+                <ColorCard color={color} name={name} />
               ))}
             </div>
           </div>
           <div className="mt-5">
             <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Contrast</h3>
             <div className="flex flex-row justify-center mt-1">
-              {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 3 }).map((value) => (
-                <ColorCard color={value} />
+              {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
+                <ColorCard color={color} name={name} />
               ))}
             </div>
           </div>
