@@ -70,35 +70,6 @@ const generatePalette = (color: string, options: Options) => {
   ];
 };
 
-interface InputProps {
-  label: string;
-  name: string;
-  placeholder: string;
-  size?: string;
-  value: string;
-  onChange(value: string): void;
-}
-
-const Input = ({ label, name, placeholder, size, onChange, value }: InputProps) => (
-  <div className="mx-2 flex flex-row justify-center overflow-hidden rounded border border-gray-200">
-    <label htmlFor={name} className="flex px-4 py-2 bg-gray-100 text-gray-400 rounder-l">
-      {label}
-    </label>
-    <input
-      className={`px-2 ${size}`}
-      onChange={(e) => {
-        e.preventDefault();
-        onChange(e.target.value);
-      }}
-      type="text"
-      name={name}
-      id={name}
-      placeholder={placeholder}
-      value={value}
-    />
-  </div>
-);
-
 const ColorCard = ({ color, name }) => (
   <div className="mx-2 border border-gray-200 rounded overflow-hidden">
     <div className="w-28 h-28" style={{ backgroundColor: `#${color}` }}></div>
@@ -120,8 +91,6 @@ export default function PrimaryPage() {
     setContrast(generateContrast(hexValue));
   };
 
-  const HexInput = () => <Input onChange={setHexValue} label="#" name="hex" placeholder="bada55" value={hexValue} />;
-
   return (
     <div>
       <Nav />
@@ -132,7 +101,22 @@ export default function PrimaryPage() {
         </h2>
       </div>
       <div className="flex flex-row justify-center mt-5">
-        <HexInput />
+        <div className="mx-2 flex flex-row justify-center overflow-hidden rounded border border-gray-200">
+          <label htmlFor="hex" className="flex px-4 py-2 bg-gray-100 text-gray-400 rounder-l">
+            #
+          </label>
+          <input
+            className="px-2"
+            onChange={(e) => {
+              setContrast('');
+              setHexValue(e.target.value);
+            }}
+            type="text"
+            name="hex"
+            id="hex"
+            placeholder="bada55"
+          />
+        </div>
         <button onClick={onClickGenerate} className="btn-blue">
           Generate contrast
         </button>
