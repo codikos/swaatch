@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import tinycolor from 'tinycolor2';
 
-import Nav from '../components/nav';
-
 const generateContrast = (primary: string) => {
   const primaryTiny = tinycolor(primary);
   const direction = primaryTiny.isDark() ? 'lighten' : 'darken';
@@ -117,7 +115,6 @@ export default function PrimaryPage() {
 
   return (
     <div>
-      <Nav />
       <div className="py-20">
         <h1 className="text-5xl text-center text-gray-700 dark:text-gray-100">First, the greys!</h1>
         <h2 className="text-2xl mt-5 text-center text-gray-500 dark: text-gray-200">
