@@ -11,6 +11,12 @@ body {
   @apply bg-gray-50 dark:bg-gray-900;
 }
 
+.page-wrapper {
+  @apply bg-gray-50 dark:bg-gray-900;
+  width: 100vw;
+  height: 100vh;
+}
+
 /* Write your own custom component styles here */
 .btn-blue {
   @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
