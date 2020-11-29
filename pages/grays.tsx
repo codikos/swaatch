@@ -8,17 +8,28 @@ import { generateContrast, generatePalette } from '../utils';
 export default function PrimaryPage() {
   const [hexValue, setHexValue] = useState('');
   const [contrast, setContrast] = useState('');
+  const [error, setError] = useState('');
 
   const onClickGenerate = () => {
-    setContrast(generateContrast(hexValue));
+    setError('');
+    try {
+      if (!hexValue) {
+        setError('You must provide us with the primary color');
+        return;
+      }
+      const contrast = generateContrast(hexValue);
+      setContrast(contrast);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   return (
     <div>
       <Nav />
-      <div className="py-10">
-        <h1 className="text-5xl text-center text-gray-700 dark:text-gray-100">First, the primary color!</h1>
-        <h2 className="text-2xl mt-5 text-center text-gray-500 dark: text-gray-200">
+      <div className="py-5">
+        <h1 className="text-4xl text-center text-gray-700 dark:text-gray-100">First, the primary color!</h1>
+        <h2 className="text-xl mt-5 text-center text-gray-500 dark: text-gray-200">
           It should be either a really dark or really light color, we will generate the best contrast for that color and
           then create some variants.
         </h2>
@@ -29,8 +40,9 @@ export default function PrimaryPage() {
             #
           </label>
           <input
-            className="px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-100"
+            className="px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
             onChange={(e) => {
+              setError('');
               setContrast('');
               setHexValue(e.target.value);
             }}
@@ -40,10 +52,15 @@ export default function PrimaryPage() {
             placeholder="bada55"
           />
         </div>
-        <button onClick={onClickGenerate} className="btn-blue">
+        <button onClick={onClickGenerate} disabled={!hexValue} className="btn-blue">
           Generate contrast
         </button>
       </div>
+      {error && (
+        <div className="container mx-auto">
+          <div className="bg-yellow-600 rounded text-center font-bold mt-10 py-10 px-20 text-white">{error}</div>
+        </div>
+      )}
       {contrast && (
         <>
           <div className="mt-5">
