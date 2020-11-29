@@ -36,7 +36,7 @@ export const generatePalette = (color: string, options: Options) => {
     return [
       { name: 'base', color },
       ...Array.from({ length: nbVariation }).map((_, i) => ({
-        name: `darken(${(i + 1) * increment})`,
+        name: `darken: ${(i + 1) * increment}%`,
         color: tinycolor(color)
           .darken((i + 1) * increment)
           .toHex(),
@@ -48,7 +48,7 @@ export const generatePalette = (color: string, options: Options) => {
     return [
       ...Array.from({ length: nbVariation })
         .map((_, i) => ({
-          name: `lighten(${(i + 1) * increment})`,
+          name: `lighten: ${(i + 1) * increment}%`,
           color: tinycolor(color)
             .lighten((i + 1) * increment)
             .toHex(),
@@ -61,7 +61,7 @@ export const generatePalette = (color: string, options: Options) => {
   return [
     ...Array.from({ length: Math.floor(nbVariation / 2) })
       .map((_, i) => ({
-        name: `lighten(${(i + 1) * increment})`,
+        name: `lighten: ${(i + 1) * increment}%`,
         color: tinycolor(color)
           .lighten((i + 1) * increment)
           .toHex(),
@@ -69,7 +69,7 @@ export const generatePalette = (color: string, options: Options) => {
       .reverse(),
     { name: 'base', color },
     ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) => ({
-      name: `darken(${(i + 1) * increment})`,
+      name: `darken: ${(i + 1) * increment}%`,
       color: tinycolor(color)
         .darken((i + 1) * increment)
         .toHex(),
