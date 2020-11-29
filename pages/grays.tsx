@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useContext, useState } from 'react';
 
 import Nav from '../components/nav';
@@ -29,6 +30,13 @@ export default function PrimaryPage() {
 
   return (
     <div>
+      <Head>
+        <title>Swaatch - Start with the primary color.</title>
+        <meta
+          name="description"
+          content="Start by giving us the primary color of your design, Swaatch will automatically calculate the best readable contrast according to WCAG recommendations."
+        />
+      </Head>
       <Nav />
       <div className="py-5">
         <h1 className="text-4xl text-center text-gray-700 dark:text-gray-100">First, the primary color!</h1>
