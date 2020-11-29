@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Nav from '../components/nav';
 import ColorCard from '../components/ColorCard';
 
-import { generateContrast, generatePalette } from '../utils';
+import { DispatchContext, generateContrast, generatePalette, SET_CONTRAST_COLORT, SET_PRIMARY_COLOR } from '../utils';
 
 export default function PrimaryPage() {
   const [hexValue, setHexValue] = useState('');
   const [contrast, setContrast] = useState('');
   const [error, setError] = useState('');
+  const dispatch = useContext(DispatchContext);
 
   const onClickGenerate = () => {
     setError('');
@@ -19,6 +20,8 @@ export default function PrimaryPage() {
       }
       const contrast = generateContrast(hexValue);
       setContrast(contrast);
+      dispatch({ type: SET_PRIMARY_COLOR, primary: `#${hexValue}` });
+      dispatch({ type: SET_CONTRAST_COLORT, contrast: `#${contrast}` });
     } catch (error) {
       setError(error);
     }

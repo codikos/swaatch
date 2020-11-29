@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function IndexPage() {
   return (
     <div className="flex flex-col place-content-center h-screen">
@@ -6,9 +8,11 @@ export default function IndexPage() {
         Generate accessible color palettes easily.
       </h2>
       <div className="flex flex-row place-content-center my-10">
-        <a href="/grays" className="btn-blue">
-          Let's begin!
-        </a>
+        <Link href="/grays">
+          <a href="/grays" className="btn-blue">
+            Let's begin!
+          </a>
+        </Link>
       </div>
     </div>
   );
