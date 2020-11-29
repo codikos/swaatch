@@ -6,6 +6,10 @@
 @tailwind components;
 /* Stop purging. */
 
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
 html,
 body {
   @apply bg-gray-50 dark:bg-gray-900;
@@ -22,8 +26,12 @@ body {
   @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
 }
 
-/* Start purging... */
-@tailwind utilities;
-/* Stop purging. */
+.btn-blue[disabled] {
+  @apply opacity-50;
+}
+
+.btn-blue:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-opacity-50;
+}
 
 /* Your own custom utilities */
