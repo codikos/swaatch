@@ -1,10 +1,11 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useContext, useState } from 'react';
 
 import Nav from '../components/nav';
 import ColorCard from '../components/ColorCard';
 
-import { DispatchContext, generateContrast, generatePalette, SET_CONTRAST_COLORT, SET_PRIMARY_COLOR } from '../utils';
+import { DispatchContext, generateContrast, generatePalette, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR } from '../utils';
 
 export default function PrimaryPage() {
   const [hexValue, setHexValue] = useState('');
@@ -22,7 +23,7 @@ export default function PrimaryPage() {
       const contrast = generateContrast(hexValue);
       setContrast(contrast);
       dispatch({ type: SET_PRIMARY_COLOR, primary: `#${hexValue}` });
-      dispatch({ type: SET_CONTRAST_COLORT, contrast: `#${contrast}` });
+      dispatch({ type: SET_CONTRAST_COLOR, contrast: `#${contrast}` });
     } catch (error) {
       setError(error);
     }
@@ -39,10 +40,12 @@ export default function PrimaryPage() {
       </Head>
       <Nav />
       <div className="py-5">
-        <h1 className="text-4xl text-center text-gray-700 dark:text-gray-100">First, the primary color!</h1>
-        <h2 className="text-xl mt-5 text-center text-gray-500 dark: text-gray-200">
-          It should be either a really dark or really light color, we will generate the best contrast for that color and
-          then create some variants.
+        <h1 className="text-4xl text-center text-gray-800 dark:text-gray-100">First, the primary color!</h1>
+        <h2 className="text-xl mt-5 text-center text-gray-600 dark: text-gray-200">
+          It should be either a really dark or really light color, leaning towards the grays
+        </h2>
+        <h2 className="text-xl mt-2 text-center text-gray-600 dark: text-gray-200">
+          We will generate the best contrast for that color and then create some variants.
         </h2>
       </div>
       <div className="flex flex-row justify-center mt-5">
@@ -88,6 +91,16 @@ export default function PrimaryPage() {
               {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
                 <ColorCard color={color} name={name} />
               ))}
+            </div>
+          </div>
+          <div className="flex flex-col place-content-center mt-10">
+            <p className="text-2xl text-center text-gray-500">
+              If you are satisfied with those, we can go on to chose your brand color
+            </p>
+            <div className="flex place-content-center mt-10">
+              <Link href="/brand">
+                <a className="btn-blue">Choose your brand color</a>
+              </Link>
             </div>
           </div>
         </>

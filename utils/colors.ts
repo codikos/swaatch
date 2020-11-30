@@ -76,3 +76,29 @@ export const generatePalette = (color: string, options: Options) => {
     })),
   ];
 };
+
+export const generateBrand = (brand, primary) => {
+  const INCREMENT = 5;
+  const MAX_TRIES = 20;
+
+  const isBrandReadable = tinycolor.isReadable(brand, primary);
+  const primaryTiny = tinycolor(primary);
+  const direction = primaryTiny.isDark() ? 'lighten' : 'darken';
+  let newBrand = tinycolor(brand).clone();
+
+  let tries = 0;
+
+  if (!isBrandReadable) {
+    while (!tinycolor.isReadable(primary, newBrand)) {
+      if (tries >= MAX_TRIES) break;
+      newBrand = tinycolor(newBrand)[direction](INCREMENT);
+      tries++;
+    }
+    throw {
+      message: `The contrast between your brand color and your primary color is not high enough. In the same hue we recommend using: ${newBrand}`,
+      brand: newBrand.toHex(),
+    };
+  }
+
+  return brand;
+};
