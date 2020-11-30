@@ -1,17 +1,30 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Nav from '../components/nav';
 import ColorCard from '../components/ColorCard';
 
-import { DispatchContext, generateContrast, generatePalette, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR } from '../utils';
+import {
+  DispatchContext,
+  generateContrast,
+  generatePalette,
+  SET_CONTRAST_COLOR,
+  SET_PRIMARY_COLOR,
+  StateContext,
+} from '../utils';
 
 export default function PrimaryPage() {
+  const state = useContext(StateContext);
   const [hexValue, setHexValue] = useState('');
   const [contrast, setContrast] = useState('');
   const [error, setError] = useState('');
   const dispatch = useContext(DispatchContext);
+
+  useEffect(() => {
+    setHexValue(state.primary.replace('#', ''));
+    setContrast(state.contrast.replace('#', ''));
+  }, []);
 
   const onClickGenerate = () => {
     setError('');

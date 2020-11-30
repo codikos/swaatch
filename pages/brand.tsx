@@ -6,7 +6,7 @@ import ColorCard from '../components/ColorCard';
 
 export default function BrandPage() {
   const [brand, setBrand] = useState('');
-  const [brandPalette, setBrandPalette] = useState([]);
+  const [paletteGenerated, setPaletteGenerated] = useState(false);
   const [error, setError] = useState('');
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
@@ -16,11 +16,15 @@ export default function BrandPage() {
     if (!state.primary && !state.contrast) {
       router.replace('/primary');
     }
+    setBrand(state.brand.replace('#', ''));
+    if (state.brand) {
+      setPaletteGenerated(true);
+    }
   }, []);
 
   const onClickGenerate = () => {
     setError('');
-    setBrandPalette([]);
+    setPaletteGenerated(false);
 
     try {
       if (!brand) {
@@ -28,13 +32,14 @@ export default function BrandPage() {
         return;
       }
       const brandColor = generateBrand(brand, state.primary);
-      setBrandPalette(generatePalette(brandColor, { direction: 'both', nbVariation: 6, increment: 3 }));
-      dispatch({ type: SET_BRAND_COLOR, brand });
+      setBrand(brandColor);
+      dispatch({ type: SET_BRAND_COLOR, brand: brandColor });
     } catch (error) {
       setError(error.message);
       setBrand(error.brand);
-      setBrandPalette(generatePalette(error.brand, { direction: 'both', nbVariation: 6, increment: 3 }));
       dispatch({ type: SET_BRAND_COLOR, brand: error.brand });
+    } finally {
+      setPaletteGenerated(true);
     }
   };
 
@@ -79,12 +84,12 @@ export default function BrandPage() {
           <div className="bg-yellow-600 rounded text-center font-bold mt-10 py-10 px-20 text-white">{error}</div>
         </div>
       )}
-      {!!brandPalette.length && (
+      {paletteGenerated && (
         <>
           <div className="mt-5">
             <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Brand</h3>
             <div className="flex flex-row justify-center mt-1">
-              {brandPalette.map(({ name, color }) => (
+              {generatePalette(brand, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
                 <ColorCard color={color} name={name} />
               ))}
             </div>
