@@ -34,4 +34,12 @@ body {
   @apply outline-none ring-2 ring-blue-600 ring-opacity-50;
 }
 
+.btn-nav {
+  @apply transition cursor-pointer text-gray-700 no-underline text-accent-1 dark:text-gray-200 h-14 w-14 flex items-center justify-center rounded-full;
+}
+
+.btn-nav:hover {
+  @apply bg-gray-200 dark:bg-gray-800;
+}
+
 /* Your own custom utilities */

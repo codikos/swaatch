@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useContext, useEffect } from 'react';
 import { DispatchContext, generateBrand, generatePalette, SET_BRAND_COLOR, StateContext } from '../utils';
 import ColorCard from '../components/ColorCard';
+import Nav from '../components/nav';
 
 export default function BrandPage() {
   const [brand, setBrand] = useState('');
@@ -52,6 +53,7 @@ export default function BrandPage() {
           content="You can now choose the color of your brand, we will also generate some variations."
         />
       </Head>
+      <Nav />
       <div className="py-5">
         <h1 className="text-4xl text-center text-gray-800 dark:text-gray-100">Now the color of your brand!</h1>
         <h2 className="text-xl mt-5 text-center text-gray-600 dark: text-gray-200">
