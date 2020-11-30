@@ -17,10 +17,8 @@ export default function IndexPage() {
           Generate accessible color palettes easily.
         </h2>
         <div className="flex flex-row place-content-center my-10">
-          <Link href="/grays">
-            <a href="/grays" className="btn-blue">
-              Let's begin!
-            </a>
+          <Link href="/primary">
+            <a className="btn-blue">Let's begin!</a>
           </Link>
         </div>
       </div>
