@@ -61,9 +61,7 @@ export default function BrandPage() {
       <Nav />
       <div className="container p-10 mx-auto">
         <div className="py-5">
-          <h1 className="p-5 mx-auto text-5xl font-bold text-center text-transparent w-max bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
-            Now the color of your brand!
-          </h1>
+          <h1 className="page-title from-blue-900 to-green-500">Now the color of your brand!</h1>
           <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
             This should be a vivid color, with a high contrast against your primary color.
           </h2>

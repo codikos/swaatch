@@ -48,9 +48,7 @@ export default function PrimaryPage() {
       <Nav />
       <div className="container p-10 mx-auto">
         <div className="py-5">
-          <h1 className="p-5 mx-auto text-5xl font-bold text-center text-transparent w-max bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500">
-            First, the primary color!
-          </h1>
+          <h1 className="page-title from-gray-900 to-gray-500">First, the primary color!</h1>
           <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
             It should be either a really dark or really light color, leaning towards the grays
           </h2>
