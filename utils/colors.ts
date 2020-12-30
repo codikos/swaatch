@@ -1,9 +1,9 @@
 import tinycolor from 'tinycolor2';
 
-export const generateContrast = (primary: string) => {
-  const INCREMENT = 5;
-  const MAX_TRIES = 20;
+const INCREMENT = 5;
+const MAX_TRIES = 20;
 
+export const generateContrast = (primary: string) => {
   const primaryTiny = tinycolor(primary);
   const direction = primaryTiny.isDark() ? 'lighten' : 'darken';
   let contrastTiny = primaryTiny.clone()[direction](INCREMENT);
@@ -20,7 +20,7 @@ export const generateContrast = (primary: string) => {
     throw 'The color is not light or dark enough to find a good contrast';
   }
 
-  return contrastTiny.toHex();
+  return contrastTiny.toHexString();
 };
 
 type Options = {
@@ -30,16 +30,17 @@ type Options = {
 };
 
 export const generatePalette = (color: string, options: Options) => {
-  const { nbVariation = 6, increment = 3, direction = 'both' } = options;
+  const { nbVariation = 6, increment = 5, direction = 'both' } = options;
+  const hexColor = tinycolor(color).toHexString();
 
   if (direction === 'right') {
     return [
-      { name: 'base', color },
+      { name: 'base', color: hexColor },
       ...Array.from({ length: nbVariation }).map((_, i) => ({
         name: `darken: ${(i + 1) * increment}%`,
         color: tinycolor(color)
           .darken((i + 1) * increment)
-          .toHex(),
+          .toHexString(),
       })),
     ];
   }
@@ -51,10 +52,10 @@ export const generatePalette = (color: string, options: Options) => {
           name: `lighten: ${(i + 1) * increment}%`,
           color: tinycolor(color)
             .lighten((i + 1) * increment)
-            .toHex(),
+            .toHexString(),
         }))
         .reverse(),
-      { name: 'base', color },
+      { name: 'base', color: hexColor },
     ];
   }
 
@@ -64,23 +65,20 @@ export const generatePalette = (color: string, options: Options) => {
         name: `lighten: ${(i + 1) * increment}%`,
         color: tinycolor(color)
           .lighten((i + 1) * increment)
-          .toHex(),
+          .toHexString(),
       }))
       .reverse(),
-    { name: 'base', color },
+    { name: 'base', color: hexColor },
     ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) => ({
       name: `darken: ${(i + 1) * increment}%`,
       color: tinycolor(color)
         .darken((i + 1) * increment)
-        .toHex(),
+        .toHexString(),
     })),
   ];
 };
 
-export const generateBrand = (brand, primary) => {
-  const INCREMENT = 5;
-  const MAX_TRIES = 20;
-
+export const generateBrand = (brand: string, primary: string) => {
   const isBrandReadable = tinycolor.isReadable(brand, primary);
   const primaryTiny = tinycolor(primary);
   const direction = primaryTiny.isDark() ? 'lighten' : 'darken';
@@ -96,9 +94,35 @@ export const generateBrand = (brand, primary) => {
     }
     throw {
       message: `The contrast between your brand color and your primary color is not high enough. In the same hue we recommend using: ${newBrand}`,
-      brand: newBrand.toHex(),
+      brand: newBrand.toHexString(),
     };
   }
 
   return brand;
+};
+
+export const generateStateColor = (range: number[], saturation: number, luminosity: number) => {
+  const predictedStateHue = range[0];
+  const predictedStateSaturation = saturation;
+  const predictedStateLuminosity = luminosity;
+
+  let predictedStateColor = tinycolor({
+    h: predictedStateHue,
+    s: predictedStateSaturation,
+    l: predictedStateLuminosity,
+  });
+
+  let isPredictedStateColorReadable = tinycolor.isReadable(predictedStateColor, 'white');
+
+  let tries = 0;
+
+  if (!isPredictedStateColorReadable) {
+    while (!tinycolor.isReadable(predictedStateColor, 'white')) {
+      if (tries >= MAX_TRIES || predictedStateColor.toHsl().h >= range[1]) break;
+      predictedStateColor = predictedStateColor.spin(5);
+      tries++;
+    }
+  }
+
+  return predictedStateColor.toHexString();
 };

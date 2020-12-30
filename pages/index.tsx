@@ -11,12 +11,12 @@ export default function IndexPage() {
           content="Swaatch is an application that allows users to easily generate color palettes for their design systems. It can calculate the best contrasts based on WCAG recommendations."
         />
       </Head>
-      <div className="flex flex-col place-content-center h-screen">
-        <h1 className="text-5xl text-center text-gray-800 dark:text-gray-100">Swaatch!</h1>
-        <h2 className="text-2xl mt-5 text-center text-gray-500 dark:text-gray-300">
-          Generate accessible color palettes easily.
-        </h2>
-        <div className="flex flex-row place-content-center my-10">
+      <div className="flex flex-col h-screen p-10 place-content-center">
+        <h1 className="p-5 mx-auto text-5xl font-bold text-center text-transparent w-max bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500">
+          Swaatch!
+        </h1>
+        <h2 className="mt-5 text-2xl text-center text-gray-500">Generate accessible color palettes easily.</h2>
+        <div className="flex flex-row my-10 place-content-center">
           <Link href="/primary">
             <a className="btn-blue">Let's begin!</a>
           </Link>
