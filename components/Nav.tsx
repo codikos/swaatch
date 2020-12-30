@@ -1,7 +1,8 @@
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
-import ButtonBack from './ButtonBack';
-import LinkIcon from './LinkIcon';
+
+import ButtonBack from '@components/ButtonBack';
+import LinkIcon from '@components/LinkIcon';
 
 export default function Nav() {
   const router = useRouter();

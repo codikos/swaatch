@@ -2,17 +2,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 
-import Nav from '../components/nav';
-import ColorCard from '../components/ColorCard';
+import Nav from '@components/Nav';
+import ColorCard from '@components/ColorCard';
 
-import {
-  DispatchContext,
-  generateContrast,
-  generatePalette,
-  SET_CONTRAST_COLOR,
-  SET_PRIMARY_COLOR,
-  StateContext,
-} from '../utils';
+import { generateContrast, generatePalette } from '@utils/colors';
+import { DispatchContext, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR, StateContext } from '@utils/state';
 
 export default function PrimaryPage() {
   const state = useContext(StateContext);
@@ -22,11 +16,11 @@ export default function PrimaryPage() {
   const dispatch = useContext(DispatchContext);
 
   useEffect(() => {
-    setHexValue(state.primary.replace('#', ''));
-    setContrast(state.contrast.replace('#', ''));
+    setHexValue(state.primary);
   }, []);
 
-  const onClickGenerate = () => {
+  const onClickGenerate = (e) => {
+    e.preventDefault();
     setError('');
     try {
       if (!hexValue) {
@@ -35,8 +29,8 @@ export default function PrimaryPage() {
       }
       const contrast = generateContrast(hexValue);
       setContrast(contrast);
-      dispatch({ type: SET_PRIMARY_COLOR, primary: `#${hexValue}` });
-      dispatch({ type: SET_CONTRAST_COLOR, contrast: `#${contrast}` });
+      dispatch({ type: SET_PRIMARY_COLOR, primary: hexValue });
+      dispatch({ type: SET_CONTRAST_COLOR, contrast: contrast });
     } catch (error) {
       setError(error);
     }
@@ -52,72 +46,82 @@ export default function PrimaryPage() {
         />
       </Head>
       <Nav />
-      <div className="py-5">
-        <h1 className="text-4xl text-center text-gray-800 dark:text-gray-100">First, the primary color!</h1>
-        <h2 className="text-xl mt-5 text-center text-gray-600 dark: text-gray-200">
-          It should be either a really dark or really light color, leaning towards the grays
-        </h2>
-        <h2 className="text-xl mt-2 text-center text-gray-600 dark: text-gray-200">
-          We will generate the best contrast for that color and then create some variants.
-        </h2>
-      </div>
-      <div className="flex flex-row justify-center mt-5">
-        <div className="mx-2 flex flex-row justify-center overflow-hidden rounded border border-gray-200 dark:border-gray-600">
-          <label htmlFor="hex" className="flex px-4 py-2 bg-gray-100 text-gray-400 dark:bg-gray-700 rounder-l">
-            #
-          </label>
-          <input
-            className="px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-            onChange={(e) => {
-              setError('');
-              setContrast('');
-              setHexValue(e.target.value);
-            }}
-            type="text"
-            name="hex"
-            id="hex"
-            placeholder="bada55"
-          />
+      <div className="container p-10 mx-auto">
+        <div className="py-5">
+          <h1 className="p-5 mx-auto text-5xl font-bold text-center text-transparent w-max bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500">
+            First, the primary color!
+          </h1>
+          <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
+            It should be either a really dark or really light color, leaning towards the grays
+          </h2>
+          <h2 className="mt-2 text-xl text-center text-gray-200 text-gray-600">
+            We will generate the best contrast for that color and then create some variants.
+          </h2>
         </div>
-        <button onClick={onClickGenerate} disabled={!hexValue} className="btn-blue">
-          Generate contrast
-        </button>
+        <form onSubmit={onClickGenerate}>
+          <div className="flex flex-row justify-center mt-5">
+            <div className="flex flex-row justify-center mx-2 overflow-hidden border border-gray-200 rounded">
+              <label htmlFor="hex" className="flex px-4 py-2 text-gray-400 bg-gray-100 rounder-l">
+                #
+              </label>
+              <input
+                className="px-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                onChange={(e) => {
+                  setError('');
+                  setContrast('');
+                  setHexValue(`#${e.target.value}`);
+                }}
+                type="text"
+                name="hex"
+                id="hex"
+                placeholder="404040"
+              />
+            </div>
+            <button type="submit" disabled={!hexValue} className="btn-blue">
+              Generate contrast
+            </button>
+          </div>
+        </form>
+        {error && (
+          <div className="container mx-auto">
+            <div className="px-20 py-10 mt-10 font-bold text-center text-white bg-yellow-600 rounded">{error}</div>
+          </div>
+        )}
+        {contrast && (
+          <>
+            <div className="mt-20">
+              <h3 className="mx-2 text-3xl font-bold text-gray-700">Primary:</h3>
+              <div className="flex flex-row justify-between mt-1">
+                {generatePalette(hexValue, { direction: 'both', nbVariation: 6, increment: 5 }).map(
+                  ({ name, color }) => (
+                    <ColorCard key={color} color={color} name={name} />
+                  ),
+                )}
+              </div>
+            </div>
+            <div className="mt-10">
+              <h3 className="mx-2 text-3xl font-bold text-gray-700">Contrast:</h3>
+              <div className="flex flex-row justify-between mt-1">
+                {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 5 }).map(
+                  ({ name, color }) => (
+                    <ColorCard key={color} color={color} name={name} />
+                  ),
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col mt-20 place-content-center">
+              <p className="text-2xl text-center text-gray-500">
+                If you are satisfied with those, we can go on to chose your brand color
+              </p>
+              <div className="flex mt-10 place-content-center">
+                <Link href="/brand">
+                  <a className="btn-blue">Choose your brand color</a>
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      {error && (
-        <div className="container mx-auto">
-          <div className="bg-yellow-600 rounded text-center font-bold mt-10 py-10 px-20 text-white">{error}</div>
-        </div>
-      )}
-      {contrast && (
-        <>
-          <div className="mt-5">
-            <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Primary</h3>
-            <div className="flex flex-row justify-center mt-1">
-              {generatePalette(hexValue, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
-                <ColorCard color={color} name={name} />
-              ))}
-            </div>
-          </div>
-          <div className="mt-5">
-            <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Contrast</h3>
-            <div className="flex flex-row justify-center mt-1">
-              {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
-                <ColorCard color={color} name={name} />
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col place-content-center mt-10">
-            <p className="text-2xl text-center text-gray-500">
-              If you are satisfied with those, we can go on to chose your brand color
-            </p>
-            <div className="flex place-content-center mt-10">
-              <Link href="/brand">
-                <a className="btn-blue">Choose your brand color</a>
-              </Link>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }

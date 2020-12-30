@@ -12,16 +12,32 @@
 
 html,
 body {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-gray-50;
 }
 
 .page-wrapper {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-gray-50;
   width: 100vw;
   height: 100vh;
 }
 
 /* Write your own custom component styles here */
+.btn {
+  @apply px-4 py-2 font-bold text-gray-200 bg-gray-800 rounded transition;
+}
+
+.btn:hover {
+  @apply bg-gray-600;
+}
+
+.btn[disabled] {
+  @apply opacity-50;
+}
+
+.btn:focus {
+  @apply outline-none ring-2 ring-blue-600 ring-opacity-50;
+}
+
 .btn-blue {
   @apply px-4 py-2 font-bold text-white bg-blue-600 rounded;
 }
@@ -35,11 +51,11 @@ body {
 }
 
 .btn-nav {
-  @apply transition cursor-pointer text-gray-700 no-underline text-accent-1 dark:text-gray-200 h-14 w-14 flex items-center justify-center rounded-full;
+  @apply flex items-center justify-center text-gray-700 no-underline rounded-full cursor-pointer transition text-accent-1 h-14 w-14;
 }
 
 .btn-nav:hover {
-  @apply bg-gray-200 dark:bg-gray-800;
+  @apply bg-gray-200;
 }
 
 /* Your own custom utilities */

@@ -4,14 +4,20 @@ type ColorCardProps = {
 };
 
 export default function ColorCard({ color, name }: ColorCardProps) {
+  const isBase = name === 'base';
   return (
-    <div className="mx-2 border border-gray-200 dark:border-gray-600 rounded overflow-hidden">
-      <div className="w-full h-16" style={{ backgroundColor: `#${color}` }}></div>
-      <div className="bg-white dark:bg-gray-800 px-4 py-2 text-center">
-        <div className="text-gray-500 dark:text-gray-400">{name}</div>
+    <div
+      className={`flex flex-col flex-1 mx-2  uppercase text-center overflow-hidden rounded ${
+        isBase
+          ? 'border-2 border-blue-500 shadow-md bg-blue-500 text-white'
+          : 'border border-grey-200 bg-white text-gray-500'
+      }`}
+    >
+      <div className="w-full h-12 sm:h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32" style={{ backgroundColor: color }}></div>
+      <div className="px-4 py-2">
+        <div>{name}</div>
         <div>
-          <span className="text-blue-500 dark:text-blue-400">#</span>
-          <span className="text-gray-900 dark:text-gray-200">{color}</span>
+          <span className={`font-bold ${isBase ? 'text-gray-300' : 'text-gray-900'}`}>{color}</span>
         </div>
       </div>
     </div>

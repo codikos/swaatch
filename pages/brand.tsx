@@ -1,9 +1,13 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useContext, useEffect } from 'react';
-import { DispatchContext, generateBrand, generatePalette, SET_BRAND_COLOR, StateContext } from '../utils';
-import ColorCard from '../components/ColorCard';
-import Nav from '../components/nav';
+
+import { generateBrand, generatePalette } from '@utils/colors';
+import { DispatchContext, StateContext, SET_BRAND_COLOR } from '@utils/state';
+
+import ColorCard from '@components/ColorCard';
+import Nav from '@components/Nav';
 
 export default function BrandPage() {
   const [brand, setBrand] = useState('');
@@ -17,13 +21,14 @@ export default function BrandPage() {
     if (!state.primary && !state.contrast) {
       router.replace('/primary');
     }
-    setBrand(state.brand.replace('#', ''));
+    setBrand(state.brand);
     if (state.brand) {
       setPaletteGenerated(true);
     }
   }, []);
 
-  const onClickGenerate = () => {
+  const onClickGenerate = (e) => {
+    e.preventDefault();
     setError('');
     setPaletteGenerated(false);
 
@@ -54,60 +59,76 @@ export default function BrandPage() {
         />
       </Head>
       <Nav />
-      <div className="py-5">
-        <h1 className="text-4xl text-center text-gray-800 dark:text-gray-100">Now the color of your brand!</h1>
-        <h2 className="text-xl mt-5 text-center text-gray-600 dark: text-gray-200">
-          This should be a vivid color, with a high contrast against your primary color.
-        </h2>
-      </div>
-      <div className="flex flex-row justify-center mt-5">
-        <div className="mx-2 flex flex-row justify-center overflow-hidden rounded border border-gray-200 dark:border-gray-600">
-          <label htmlFor="hex" className="flex px-4 py-2 bg-gray-100 text-gray-400 dark:bg-gray-700 rounder-l">
-            #
-          </label>
-          <input
-            className="px-2 bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-            onChange={(e) => {
-              setError('');
-              setBrand(e.target.value);
-            }}
-            type="text"
-            name="hex"
-            id="hex"
-            placeholder="bada55"
-          />
+      <div className="container p-10 mx-auto">
+        <div className="py-5">
+          <h1 className="p-5 mx-auto text-5xl font-bold text-center text-transparent w-max bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
+            Now the color of your brand!
+          </h1>
+          <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
+            This should be a vivid color, with a high contrast against your primary color.
+          </h2>
         </div>
-        <button onClick={onClickGenerate} disabled={!brand} className="btn-blue">
-          Generate brand palette
-        </button>
+        <form onSubmit={onClickGenerate}>
+          <div className="flex flex-row justify-center mt-5">
+            <div className="flex flex-row justify-center mx-2 overflow-hidden border border-gray-200 rounded">
+              <label htmlFor="hex" className="flex px-4 py-2 text-gray-400 bg-gray-100 rounder-l">
+                #
+              </label>
+              <input
+                className="px-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                onChange={(e) => {
+                  setError('');
+                  setBrand(`#${e.target.value}`);
+                }}
+                type="text"
+                name="hex"
+                id="hex"
+                placeholder="bada55"
+              />
+            </div>
+            <button type="submit" disabled={!brand} className="btn-blue">
+              Generate brand palette
+            </button>
+          </div>
+        </form>
+        {error && (
+          <div className="container mx-auto">
+            <div className="px-20 py-10 mt-10 font-bold text-center text-white bg-yellow-600 rounded">{error}</div>
+          </div>
+        )}
+        {paletteGenerated && (
+          <>
+            <div className="mt-10">
+              <h3 className="mx-2 mb-5 text-3xl font-bold text-gray-700">Brand:</h3>
+              <div className="flex flex-row justify-between mt-1">
+                {generatePalette(brand, { direction: 'both', nbVariation: 6, increment: 5 }).map(({ name, color }) => (
+                  <ColorCard key={color} color={color} name={name} />
+                ))}
+              </div>
+            </div>
+            <div className="mt-10">
+              <h3 className="mx-2 mb-5 text-3xl font-bold text-gray-700">Primary:</h3>
+              <div className="flex flex-row justify-between mt-1">
+                {generatePalette(state.primary, { direction: 'both', nbVariation: 6, increment: 5 }).map(
+                  ({ name, color }) => (
+                    <ColorCard key={color} color={color} name={name} />
+                  ),
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col mt-20 place-content-center">
+              <p className="text-2xl text-center text-gray-500">
+                If you are satisfied with those, we can go on to chose your state colors
+              </p>
+              <div className="flex mt-10 place-content-center">
+                <Link href="/states">
+                  <a className="btn-blue">Choose your state colors</a>
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      {error && (
-        <div className="container mx-auto">
-          <div className="bg-yellow-600 rounded text-center font-bold mt-10 py-10 px-20 text-white">{error}</div>
-        </div>
-      )}
-      {paletteGenerated && (
-        <>
-          <div className="mt-5">
-            <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Brand</h3>
-            <div className="flex flex-row justify-center mt-1">
-              {generatePalette(brand, { direction: 'both', nbVariation: 6, increment: 3 }).map(({ name, color }) => (
-                <ColorCard color={color} name={name} />
-              ))}
-            </div>
-          </div>
-          <div className="mt-5">
-            <h3 className="text-1xl text-center font-bold text-gray-700 dark:text-gray-100">Primary</h3>
-            <div className="flex flex-row justify-center mt-1">
-              {generatePalette(state.primary.replace('#', ''), { direction: 'both', nbVariation: 6, increment: 3 }).map(
-                ({ name, color }) => (
-                  <ColorCard color={color} name={name} />
-                ),
-              )}
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }
