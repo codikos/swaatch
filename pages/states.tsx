@@ -66,9 +66,7 @@ export default function StatesPage() {
       <Nav />
       <div className="container p-10 mx-auto">
         <div className="py-5">
-          <h1 className="p-5 mx-auto text-xl font-bold text-center text-transparent sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl w-max bg-clip-text bg-gradient-to-r from-purple-500 to-red-500">
-            Time to set your application state colors!
-          </h1>
+          <h1 className="page-title from-purple-500 to-red-500">Time to set your application state colors!</h1>
           <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
             The state colors are used to indicate success, informations, warnings or failures and they are usually
             shades of green, blue, orange and red respectively.
