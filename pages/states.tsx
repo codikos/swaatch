@@ -3,9 +3,12 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useContext, useState } from 'react';
 import tinycolor from 'tinycolor2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle as farCheckCircle } from '@fortawesome/free-regular-svg-icons';
 
 import { generatePalette, generateStateColor } from '@utils/colors';
-import { StateContext } from '@utils/state';
+import { DispatchContext, SET_STATE_COLORS, StateContext } from '@utils/state';
 
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
@@ -17,11 +20,18 @@ const ERROR_RANGE = [-30, 30];
 
 export default function StatesPage() {
   const state = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
   const [displayedStates, setDisplayedState] = useState({
     success: null,
     info: null,
     warning: null,
     error: null,
+  });
+  const [selectedStates, setSelectedStates] = useState({
+    success: true,
+    info: true,
+    warning: true,
+    error: true,
   });
   const router = useRouter();
 
@@ -33,14 +43,28 @@ export default function StatesPage() {
     const brandHSL = brandTiny.toHsl();
     const saturation = Math.floor(brandHSL.s * 100);
     const luminosity = Math.floor(brandHSL.l * 100);
-
-    setDisplayedState({
+    const states = {
       success: generateStateColor(SUCCESS_RANGE, saturation, luminosity),
       info: generateStateColor(INFO_RANGE, saturation, luminosity),
       warning: generateStateColor(WARNING_RANGE, saturation, luminosity),
       error: generateStateColor(ERROR_RANGE, saturation, luminosity),
-    });
+    };
+
+    setDisplayedState(states);
+
+    dispatch({ type: SET_STATE_COLORS, states });
   }, []);
+
+  const toggleSelectState = (stateToToggle: string) => {
+    dispatch({
+      type: SET_STATE_COLORS,
+      states: { ...state.states, [stateToToggle]: selectedStates[stateToToggle] ? '' : displayedStates[stateToToggle] },
+    });
+    setSelectedStates((previousStates) => ({
+      ...previousStates,
+      [stateToToggle]: !previousStates[stateToToggle],
+    }));
+  };
 
   return (
     <div>
@@ -70,7 +94,21 @@ export default function StatesPage() {
                 .filter(([_, color]) => Boolean(color))
                 .map(([state, color]) => (
                   <Fragment key={color}>
-                    <h3 className="mx-2 mt-5 text-2xl font-bold text-gray-700 capitalize">{state}</h3>
+                    <h3 className="mx-2 mt-5 text-2xl font-bold text-gray-700 capitalize">
+                      <label className="">
+                        <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : 'text-gray-500'}`}>
+                          <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
+                        </span>
+                        <input
+                          onClick={() => toggleSelectState(state)}
+                          className="hidden"
+                          type="checkbox"
+                          checked={selectedStates[state]}
+                          value={selectedStates[state]}
+                        />
+                        {state}
+                      </label>
+                    </h3>
                     <div key={state} className="flex flex-row justify-center mt-2">
                       {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5 }).map(
                         ({ name, color }) => (
