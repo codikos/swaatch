@@ -1,11 +1,14 @@
+import { Fragment } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useContext, useState } from 'react';
-import { capitalize } from 'lodash/fp';
 import tinycolor from 'tinycolor2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle as farCheckCircle } from '@fortawesome/free-regular-svg-icons';
 
 import { generatePalette, generateStateColor } from '@utils/colors';
-import { StateContext } from '@utils/state';
+import { DispatchContext, SET_STATE_COLORS, StateContext } from '@utils/state';
 
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
@@ -15,23 +18,22 @@ const INFO_RANGE = [210, 270];
 const WARNING_RANGE = [0, 60];
 const ERROR_RANGE = [-30, 30];
 
-const ranges = {
-  success: SUCCESS_RANGE,
-  info: INFO_RANGE,
-  warning: WARNING_RANGE,
-  error: ERROR_RANGE,
-};
-
 export default function StatesPage() {
+  const state = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
   const [displayedStates, setDisplayedState] = useState({
     success: null,
     info: null,
     warning: null,
     error: null,
   });
-  const [brandColorValues, setBrandColorValues] = useState({ saturation: null, luminosity: null });
+  const [selectedStates, setSelectedStates] = useState({
+    success: true,
+    info: true,
+    warning: true,
+    error: true,
+  });
   const router = useRouter();
-  const state = useContext(StateContext);
 
   useEffect(() => {
     if (!state.primary && !state.contrast) {
@@ -41,16 +43,26 @@ export default function StatesPage() {
     const brandHSL = brandTiny.toHsl();
     const saturation = Math.floor(brandHSL.s * 100);
     const luminosity = Math.floor(brandHSL.l * 100);
+    const states = {
+      success: generateStateColor(SUCCESS_RANGE, saturation, luminosity),
+      info: generateStateColor(INFO_RANGE, saturation, luminosity),
+      warning: generateStateColor(WARNING_RANGE, saturation, luminosity),
+      error: generateStateColor(ERROR_RANGE, saturation, luminosity),
+    };
 
-    setBrandColorValues({ saturation, luminosity });
+    setDisplayedState(states);
+
+    dispatch({ type: SET_STATE_COLORS, states });
   }, []);
 
-  const toggleState = (state: string) => {
-    setDisplayedState((previousStates) => ({
+  const toggleSelectState = (stateToToggle: string) => {
+    dispatch({
+      type: SET_STATE_COLORS,
+      states: { ...state.states, [stateToToggle]: selectedStates[stateToToggle] ? '' : displayedStates[stateToToggle] },
+    });
+    setSelectedStates((previousStates) => ({
       ...previousStates,
-      [state]: previousStates[state]
-        ? null
-        : generateStateColor(ranges[state], brandColorValues.saturation, brandColorValues.luminosity),
+      [stateToToggle]: !previousStates[stateToToggle],
     }));
   };
 
@@ -66,29 +78,11 @@ export default function StatesPage() {
       <Nav />
       <div className="container p-10 mx-auto">
         <div className="py-5">
-          <h1 className="page-title from-purple-500 to-red-500">Time to set your application state colors!</h1>
+          <h1 className="page-title from-purple-500 to-red-500">Time to select your application state colors!</h1>
           <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
             The state colors are used to indicate success, informations, warnings or failures and they are usually
             shades of green, blue, orange and red respectively.
           </h2>
-        </div>
-        <div className="flex flex-col items-center mt-5">
-          <p className="mb-5">Select the states you need:</p>
-          <div>
-            {Object.entries(displayedStates).map(([state, isOn]) => (
-              <button key={state} className={`${isOn ? 'btn-blue' : 'btn'} mx-2`} onClick={() => toggleState(state)}>
-                {capitalize(state)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="mt-10">
-          <h3 className="mx-2 text-3xl font-bold text-gray-700">Reminder</h3>
-          <div className="flex flex-row justify-between mt-1">
-            <ColorCard color={state.primary} name="Primary" />
-            <ColorCard color={state.contrast} name="Contrast" />
-            <ColorCard color={state.brand} name="Brand" />
-          </div>
         </div>
         {Object.values(displayedStates)
           .map(Boolean)
@@ -99,8 +93,22 @@ export default function StatesPage() {
               {Object.entries(displayedStates)
                 .filter(([_, color]) => Boolean(color))
                 .map(([state, color]) => (
-                  <>
-                    <h3 className="mx-2 mt-5 text-2xl font-bold text-gray-700">{state}</h3>
+                  <Fragment key={color}>
+                    <h3 className="mx-2 mt-5 text-2xl font-bold text-gray-700 capitalize">
+                      <label className="">
+                        <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : 'text-gray-500'}`}>
+                          <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
+                        </span>
+                        <input
+                          onClick={() => toggleSelectState(state)}
+                          className="hidden"
+                          type="checkbox"
+                          checked={selectedStates[state]}
+                          value={selectedStates[state]}
+                        />
+                        {state}
+                      </label>
+                    </h3>
                     <div key={state} className="flex flex-row justify-center mt-2">
                       {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5 }).map(
                         ({ name, color }) => (
@@ -108,11 +116,19 @@ export default function StatesPage() {
                         ),
                       )}
                     </div>
-                  </>
+                  </Fragment>
                 ))}
             </div>
           </div>
         )}
+        <div className="mt-10">
+          <h3 className="mx-2 text-3xl font-bold text-gray-700">Reminder</h3>
+          <div className="flex flex-row justify-between mt-1">
+            <ColorCard color={state.primary} name="Primary" />
+            <ColorCard color={state.contrast} name="Contrast" />
+            <ColorCard color={state.brand} name="Brand" />
+          </div>
+        </div>
       </div>
     </div>
   );

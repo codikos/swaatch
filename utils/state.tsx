@@ -4,11 +4,18 @@ export const initialState = {
   primary: '',
   contrast: '',
   brand: '',
+  states: {
+    success: '',
+    info: '',
+    warning: '',
+    error: '',
+  },
 };
 
 export const SET_PRIMARY_COLOR = 'SET_PRIMARY_COLOR';
 export const SET_CONTRAST_COLOR = 'SET_CONTRAST_COLORT';
 export const SET_BRAND_COLOR = 'SET_BRAND_COLOR';
+export const SET_STATE_COLORS = 'SET_STATE_COLORS';
 
 const reducer = (state: typeof initialState, action: any) => {
   switch (action.type) {
@@ -18,6 +25,8 @@ const reducer = (state: typeof initialState, action: any) => {
       return { ...state, contrast: action.contrast };
     case SET_BRAND_COLOR:
       return { ...state, brand: action.brand };
+    case SET_STATE_COLORS:
+      return { ...state, states: action.states };
   }
 };
 
