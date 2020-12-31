@@ -16,7 +16,7 @@ export default function Nav() {
           </li>
         )}
         <li>
-          {router.pathname === '/primary' && <LinkIcon href="/" title="home" icon={faHome} />}
+          {router.pathname === '/primary' && <LinkIcon href="/" title="Home" icon={faHome} />}
           {router.pathname !== '/primary' && <ButtonBack />}
         </li>
       </ul>
