@@ -76,57 +76,61 @@ export default function StatesPage() {
         />
       </Head>
       <Nav />
-      <div className="container p-10 mx-auto">
-        <div className="py-5">
-          <h1 className="page-title from-purple-500 to-red-500">Time to select your application state colors!</h1>
-          <h2 className="mt-5 text-xl text-center text-gray-200 text-gray-600">
+      <div className="page-container">
+        <div className="page-left-container">
+          <h1 className="page-title from-purple-500 to-red-500 dark:from-purple-400 dark:to-red-400">
+            Time to select your application state colors!
+          </h1>
+          <h2 className="mt-5">
             The state colors are used to indicate success, informations, warnings or failures and they are usually
             shades of green, blue, orange and red respectively.
           </h2>
         </div>
-        {Object.values(displayedStates)
-          .map(Boolean)
-          .includes(true) && (
-          <div className="mt-10">
-            <h3 className="mx-2 text-3xl font-bold text-gray-700">State colors</h3>
-            <div className="flex flex-col mt-2">
-              {Object.entries(displayedStates)
-                .filter(([_, color]) => Boolean(color))
-                .map(([state, color]) => (
-                  <Fragment key={color}>
-                    <h3 className="mx-2 mt-5 text-2xl font-bold text-gray-700 capitalize">
-                      <label className="">
-                        <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : 'text-gray-500'}`}>
-                          <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
-                        </span>
-                        <input
-                          onClick={() => toggleSelectState(state)}
-                          className="hidden"
-                          type="checkbox"
-                          checked={selectedStates[state]}
-                          value={selectedStates[state]}
-                        />
-                        {state}
-                      </label>
-                    </h3>
-                    <div key={state} className="flex flex-row justify-center mt-2">
-                      {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5 }).map(
-                        ({ name, color }) => (
-                          <ColorCard key={name} color={color} name={name} />
-                        ),
-                      )}
-                    </div>
-                  </Fragment>
-                ))}
+        <div className="page-right-container">
+          {Object.values(displayedStates)
+            .map(Boolean)
+            .includes(true) && (
+            <div className="mt-10">
+              <h3 className="mx-2 text-3xl font-bold">State colors</h3>
+              <div className="flex flex-col mt-2">
+                {Object.entries(displayedStates)
+                  .filter(([_, color]) => Boolean(color))
+                  .map(([state, color]) => (
+                    <Fragment key={color}>
+                      <h3 className="mx-2 mt-5 text-2xl font-bold capitalize">
+                        <label className="">
+                          <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : ''}`}>
+                            <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
+                          </span>
+                          <input
+                            onClick={() => toggleSelectState(state)}
+                            className="hidden"
+                            type="checkbox"
+                            checked={selectedStates[state]}
+                            value={selectedStates[state]}
+                          />
+                          {state}
+                        </label>
+                      </h3>
+                      <div key={state} className="flex flex-row justify-center mt-2">
+                        {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5 }).map(
+                          ({ name, color }) => (
+                            <ColorCard key={name} color={color} name={name} />
+                          ),
+                        )}
+                      </div>
+                    </Fragment>
+                  ))}
+              </div>
             </div>
-          </div>
-        )}
-        <div className="mt-10">
-          <h3 className="mx-2 text-3xl font-bold text-gray-700">Reminder</h3>
-          <div className="flex flex-row justify-between mt-1">
-            <ColorCard color={state.primary} name="Primary" />
-            <ColorCard color={state.contrast} name="Contrast" />
-            <ColorCard color={state.brand} name="Brand" />
+          )}
+          <div className="mt-10">
+            <h3 className="mx-2 text-3xl font-bold">Reminder</h3>
+            <div className="flex flex-row justify-between mt-1">
+              <ColorCard color={state.primary} name="Primary" />
+              <ColorCard color={state.contrast} name="Contrast" />
+              <ColorCard color={state.brand} name="Brand" />
+            </div>
           </div>
         </div>
       </div>

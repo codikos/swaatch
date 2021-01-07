@@ -8,8 +8,8 @@ export default function Nav() {
   const router = useRouter();
 
   return (
-    <nav>
-      <ul className="flex items-center p-8">
+    <nav className="fixed w-screen bg-white xl:bg-transparent 2xl:bg-transparent dark:bg-gray-900">
+      <ul className="flex items-center p-4">
         {router.pathname !== '/primary' && (
           <li>
             <LinkIcon href="/" title="Start over" icon={faAngleDoubleLeft} />
