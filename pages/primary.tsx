@@ -57,12 +57,12 @@ export default function PrimaryPage() {
         <div className="page-right-container">
           <form onSubmit={onClickGenerate}>
             <div className="flex flex-row justify-center mt-5">
-              <div className="flex flex-row justify-center mx-2 overflow-hidden border border-gray-200 rounded">
-                <label htmlFor="hex" className="flex px-4 py-2 text-gray-400 bg-gray-100 rounder-l">
+              <div className="container-input-color">
+                <label htmlFor="hex" className="label-input-color">
                   #
                 </label>
                 <input
-                  className="px-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                  className="input-color"
                   onChange={(e) => {
                     setError('');
                     setContrast('');
