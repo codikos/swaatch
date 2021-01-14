@@ -74,4 +74,20 @@ body {
   @apply flex flex-col flex-grow h-screen px-10 bg-gray-100 2xl:overflow-auto xl:overflow-auto py-28 dark:bg-gray-800;
 }
 
+.container-input-color {
+  @apply flex flex-row justify-center mx-2 overflow-hidden border border-gray-200 rounded dark:border-gray-700;
+}
+
+.label-input-color {
+  @apply flex px-4 py-2 text-gray-400 bg-gray-100 rounded-l dark:bg-gray-700 dark:text-gray-200;
+}
+
+.input-color {
+  @apply px-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:bg-gray-900 dark:text-white;
+}
+
+.input-color::placeholder {
+  @apply text-gray-400 ;
+}
+
 /* Your own custom utilities */
