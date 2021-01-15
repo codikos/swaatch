@@ -11,7 +11,7 @@ export default function Nav() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="fixed flex justify-between w-screen bg-white xl:bg-transparent 2xl:bg-transparent dark:bg-gray-900 xl:dark:bg-transparent 2xl:dark:bg-transparent">
+    <nav className="fixed z-10 flex justify-between w-screen bg-white xl:bg-transparent 2xl:bg-transparent dark:bg-gray-900 xl:dark:bg-transparent 2xl:dark:bg-transparent">
       <ul className="flex items-center p-4">
         {router.pathname !== '/primary' && (
           <li>

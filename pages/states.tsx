@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, useRef } from 'react';
 import tinycolor from 'tinycolor2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle as farCheckCircle } from '@fortawesome/free-regular-svg-icons';
 
 import { generatePalette, generateStateColor } from '@utils/colors';
@@ -34,6 +34,7 @@ export default function StatesPage() {
     error: true,
   });
   const router = useRouter();
+  const contentElm = useRef(null);
 
   useEffect(() => {
     if (!state.primary && !state.contrast) {
@@ -54,6 +55,8 @@ export default function StatesPage() {
 
     dispatch({ type: SET_STATE_COLORS, states });
   }, []);
+
+  const scrollToContent = () => contentElm.current.scrollIntoView();
 
   const toggleSelectState = (stateToToggle: string) => {
     dispatch({
@@ -81,12 +84,18 @@ export default function StatesPage() {
           <h1 className="page-title from-purple-500 to-red-500 dark:from-purple-400 dark:to-red-400">
             Time to select your application state colors!
           </h1>
-          <h2 className="mt-5">
-            The state colors are used to indicate success, informations, warnings or failures and they are usually
-            shades of green, blue, orange and red respectively.
-          </h2>
+          <p className="mt-5">
+            The state colors are used to indicate <strong>success</strong>, <strong>informations</strong>,{' '}
+            <strong>warnings</strong> or <strong>failures</strong> and they are usually shades of{' '}
+            <strong className="text-green-600">green</strong>, <strong className="text-blue-600">blue</strong>,{' '}
+            <strong className="text-yellow-600">orange</strong> and <strong className="text-red-600">red</strong>{' '}
+            respectively.
+          </p>
+          <button className="scroll-btn" onClick={scrollToContent}>
+            <FontAwesomeIcon icon={faArrowDown} />
+          </button>
         </div>
-        <div className="page-right-container">
+        <div ref={contentElm} className="page-right-container">
           {Object.values(displayedStates)
             .map(Boolean)
             .includes(true) && (
