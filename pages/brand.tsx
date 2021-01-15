@@ -107,7 +107,7 @@ export default function BrandPage() {
             <>
               <div className="mt-10">
                 <h3 className="mx-2 mb-5 text-3xl font-bold">Brand:</h3>
-                <div className="flex flex-row justify-between mt-1">
+                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {paletteGenerated.map(({ name, color }) => (
                     <ColorCard key={color} color={color} name={name} />
                   ))}
@@ -115,7 +115,7 @@ export default function BrandPage() {
               </div>
               <div className="mt-10">
                 <h3 className="mx-2 mb-5 text-3xl font-bold">Primary:</h3>
-                <div className="flex flex-row justify-between mt-1">
+                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {generatePalette(state.primary, { direction: 'both', nbVariation: 6, increment: 5 }).map(
                     ({ name, color }) => (
                       <ColorCard key={color} color={color} name={name} />
