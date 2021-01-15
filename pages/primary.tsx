@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
 
 import { generateContrast, generatePalette } from '@utils/colors';
 import { DispatchContext, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR, StateContext } from '@utils/state';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function PrimaryPage() {
   const state = useContext(StateContext);
@@ -14,6 +16,7 @@ export default function PrimaryPage() {
   const [contrast, setContrast] = useState('');
   const [error, setError] = useState('');
   const dispatch = useContext(DispatchContext);
+  const contentElm = useRef(null);
 
   useEffect(() => {
     setHexValue(state.primary);
@@ -36,6 +39,8 @@ export default function PrimaryPage() {
     }
   };
 
+  const scrollToContent = () => contentElm.current.scrollIntoView();
+
   return (
     <div>
       <Head>
@@ -51,10 +56,22 @@ export default function PrimaryPage() {
           <h1 className="page-title from-gray-900 to-gray-500 dark:from-gray-500 dark:to-gray-100">
             First, the primary color!
           </h1>
-          <h2 className="mt-5">It should be either a really dark or really light color, leaning towards the grays</h2>
-          <h2 className="mt-2">We will generate the best contrast for that color and then create some variants.</h2>
+          <p className="mt-5">
+            The primary color is generally used for the background or the main text color of your application.
+          </p>
+          <p className="mt-5">
+            It should either be a really dark or really light color,{' '}
+            <strong>meaning a really high or really low lightness level</strong>.
+          </p>
+          <p className="mt-5">
+            It should also lean towards the grayish colors, <strong>which means a really low saturation level</strong>.
+          </p>
+          <p className="mt-5">We will generate the best contrast for that color and then create some variants.</p>
+          <button className="scroll-btn" onClick={scrollToContent}>
+            <FontAwesomeIcon icon={faArrowDown} />
+          </button>
         </div>
-        <div className="page-right-container">
+        <div className="page-right-container" ref={contentElm}>
           <form onSubmit={onClickGenerate}>
             <div className="flex flex-row justify-center mt-5">
               <div className="container-input-color">

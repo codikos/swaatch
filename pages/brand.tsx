@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, useContext, useEffect } from 'react';
+import { useRef, useState, useContext, useEffect } from 'react';
 import { isEmpty } from 'lodash/fp';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 import { generateBrand, generatePalette } from '@utils/colors';
 import { DispatchContext, StateContext, SET_BRAND_COLOR } from '@utils/state';
@@ -17,6 +19,7 @@ export default function BrandPage() {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
   const router = useRouter();
+  const contentElm = useRef(null);
 
   useEffect(() => {
     if (!state.primary && !state.contrast) {
@@ -27,6 +30,8 @@ export default function BrandPage() {
       setPaletteGenerated(generatePalette(state.brand, { direction: 'both', nbVariation: 6, increment: 5 }));
     }
   }, []);
+
+  const scrollToContent = () => contentElm.current.scrollIntoView();
 
   const onClickGenerate = (e) => {
     e.preventDefault();
@@ -64,9 +69,12 @@ export default function BrandPage() {
           <h1 className="page-title from-blue-900 to-green-500 dark:from-blue-500 dark:to-green-400">
             Now the color of your brand!
           </h1>
-          <h2 className="mt-5">This should be a vivid color, with a high contrast against your primary color.</h2>
+          <p className="mt-5">This should be a vivid color, with a high contrast against your primary color.</p>
+          <button className="scroll-btn" onClick={scrollToContent}>
+            <FontAwesomeIcon icon={faArrowDown} />
+          </button>
         </div>
-        <div className="page-right-container">
+        <div ref={contentElm} className="page-right-container">
           <form onSubmit={onClickGenerate}>
             <div className="flex flex-row justify-center mt-5">
               <div className="container-input-color">
