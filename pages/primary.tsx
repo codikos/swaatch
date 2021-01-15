@@ -105,7 +105,7 @@ export default function PrimaryPage() {
             <>
               <div className="mt-20">
                 <h3 className="mx-2 text-3xl font-bold">Primary:</h3>
-                <div className="flex flex-row justify-between mt-1">
+                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {generatePalette(hexValue, { direction: 'both', nbVariation: 6, increment: 5 }).map(
                     ({ name, color }) => (
                       <ColorCard key={color} color={color} name={name} />
@@ -115,7 +115,7 @@ export default function PrimaryPage() {
               </div>
               <div className="mt-10">
                 <h3 className="mx-2 text-3xl font-bold">Contrast:</h3>
-                <div className="flex flex-row justify-between mt-1">
+                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 5 }).map(
                     ({ name, color }) => (
                       <ColorCard key={color} color={color} name={name} />

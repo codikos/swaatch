@@ -121,7 +121,7 @@ export default function StatesPage() {
                           {state}
                         </label>
                       </h3>
-                      <div key={state} className="flex flex-row justify-center mt-2">
+                      <div key={state} className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
                         {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5 }).map(
                           ({ name, color }) => (
                             <ColorCard key={name} color={color} name={name} />
@@ -135,7 +135,7 @@ export default function StatesPage() {
           )}
           <div className="mt-10">
             <h3 className="mx-2 text-3xl font-bold">Reminder</h3>
-            <div className="flex flex-row justify-between mt-1">
+            <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
               <ColorCard color={state.primary} name="Primary" />
               <ColorCard color={state.contrast} name="Contrast" />
               <ColorCard color={state.brand} name="Brand" />
