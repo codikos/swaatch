@@ -24,6 +24,7 @@ export const generateContrast = (primary: string) => {
 };
 
 type Options = {
+  name: string;
   nbVariation: number;
   increment: number;
   direction: string;
@@ -35,9 +36,9 @@ export const generatePalette = (color: string, options: Options) => {
 
   if (direction === 'right') {
     return [
-      { name: 'base', color: hexColor },
+      { name: options.name, color: hexColor },
       ...Array.from({ length: nbVariation }).map((_, i) => ({
-        name: `darken: ${(i + 1) * increment}%`,
+        name: `${options.name}-dark-${(i + 1) * 100}`,
         color: tinycolor(color)
           .darken((i + 1) * increment)
           .toHexString(),
@@ -48,29 +49,29 @@ export const generatePalette = (color: string, options: Options) => {
   if (direction === 'left') {
     return [
       ...Array.from({ length: nbVariation })
-        .map((_, i) => ({
-          name: `lighten: ${(i + 1) * increment}%`,
+        .map((_, i: number) => ({
+          name: `${options.name}-light-${(i + 1) * 100}`,
           color: tinycolor(color)
             .lighten((i + 1) * increment)
             .toHexString(),
         }))
         .reverse(),
-      { name: 'base', color: hexColor },
+      { name: options.name, color: hexColor },
     ];
   }
 
   return [
     ...Array.from({ length: Math.floor(nbVariation / 2) })
       .map((_, i) => ({
-        name: `lighten: ${(i + 1) * increment}%`,
+        name: `${options.name}-light-${(i + 1) * 100}`,
         color: tinycolor(color)
           .lighten((i + 1) * increment)
           .toHexString(),
       }))
       .reverse(),
-    { name: 'base', color: hexColor },
+    { name: options.name, color: hexColor },
     ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) => ({
-      name: `darken: ${(i + 1) * increment}%`,
+      name: `${options.name}-dark-${(i + 1) * 100}`,
       color: tinycolor(color)
         .darken((i + 1) * increment)
         .toHexString(),

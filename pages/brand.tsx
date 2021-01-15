@@ -11,6 +11,7 @@ import { DispatchContext, StateContext, SET_BRAND_COLOR } from '@utils/state';
 
 import ColorCard from '@components/ColorCard';
 import Nav from '@components/Nav';
+import { isHighlight } from '@utils/index';
 
 export default function BrandPage() {
   const [brand, setBrand] = useState('');
@@ -21,13 +22,15 @@ export default function BrandPage() {
   const router = useRouter();
   const contentElm = useRef(null);
 
+  const paletteOptions = { direction: 'both', nbVariation: 6, increment: 5 };
+
   useEffect(() => {
     if (!state.primary && !state.contrast) {
       router.replace('/primary');
     }
     if (state.brand) {
       setBrand(state.brand);
-      setPaletteGenerated(generatePalette(state.brand, { direction: 'both', nbVariation: 6, increment: 5 }));
+      setPaletteGenerated(generatePalette(state.brand, { ...paletteOptions, name: 'brand' }));
     }
   }, []);
 
@@ -45,7 +48,7 @@ export default function BrandPage() {
       }
       const brandColor = generateBrand(brand, state.primary);
       setBrand(brandColor);
-      setPaletteGenerated(generatePalette(brandColor, { direction: 'both', nbVariation: 6, increment: 5 }));
+      setPaletteGenerated(generatePalette(brandColor, { ...paletteOptions, name: 'brand' }));
       dispatch({ type: SET_BRAND_COLOR, brand: brandColor });
     } catch (error) {
       setError(error.message);
@@ -109,18 +112,16 @@ export default function BrandPage() {
                 <h3 className="mx-2 mb-5 text-3xl font-bold">Brand:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {paletteGenerated.map(({ name, color }) => (
-                    <ColorCard key={color} color={color} name={name} />
+                    <ColorCard key={color} color={color} name={name} highlight={isHighlight(name)} />
                   ))}
                 </div>
               </div>
               <div className="mt-10">
                 <h3 className="mx-2 mb-5 text-3xl font-bold">Primary:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-                  {generatePalette(state.primary, { direction: 'both', nbVariation: 6, increment: 5 }).map(
-                    ({ name, color }) => (
-                      <ColorCard key={color} color={color} name={name} />
-                    ),
-                  )}
+                  {generatePalette(state.primary, { ...paletteOptions, name: 'primary' }).map(({ name, color }) => (
+                    <ColorCard key={color} color={color} name={name} highlight={isHighlight(name)} />
+                  ))}
                 </div>
               </div>
               <div className="flex flex-col mt-20 place-content-center">

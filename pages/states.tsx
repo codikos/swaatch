@@ -12,6 +12,7 @@ import { DispatchContext, SET_STATE_COLORS, StateContext } from '@utils/state';
 
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
+import { isHighlight } from '@utils/index';
 
 const SUCCESS_RANGE = [90, 150];
 const INFO_RANGE = [210, 270];
@@ -122,9 +123,9 @@ export default function StatesPage() {
                         </label>
                       </h3>
                       <div key={state} className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
-                        {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5 }).map(
+                        {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5, name: state }).map(
                           ({ name, color }) => (
-                            <ColorCard key={name} color={color} name={name} />
+                            <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
                           ),
                         )}
                       </div>
