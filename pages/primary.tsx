@@ -13,16 +13,32 @@ import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 export default function PrimaryPage() {
   const state = useContext(StateContext);
   const [hexValue, setHexValue] = useState('');
+  const [hexPalette, setHexPalette] = useState([]);
   const [contrast, setContrast] = useState('');
+  const [contrastPalette, setContrastPalette] = useState([]);
   const [error, setError] = useState('');
   const dispatch = useContext(DispatchContext);
   const contentElm = useRef(null);
 
+  const paletteOptions = { direction: 'both', nbVariation: 6, increment: 5 };
+
   useEffect(() => {
-    setHexValue(state.primary);
+    if (state.primary) {
+      setHexValue(state.primary);
+      setHexPalette(generatePalette(state.primary, paletteOptions));
+
+      if (state.contrast) {
+        setContrast(state.contrast);
+        setContrastPalette(generatePalette(state.contrast, paletteOptions));
+      } else {
+        const initContrast = generateContrast(state.primary);
+        setContrast(initContrast);
+        setContrastPalette(generatePalette(initContrast, paletteOptions));
+      }
+    }
   }, []);
 
-  const onClickGenerate = (e) => {
+  const onClickGenerate = (e: any) => {
     e.preventDefault();
     setError('');
     try {
@@ -30,8 +46,10 @@ export default function PrimaryPage() {
         setError('You must provide us with the primary color');
         return;
       }
+      setHexPalette(generatePalette(hexValue, paletteOptions));
       const contrast = generateContrast(hexValue);
       setContrast(contrast);
+      setContrastPalette(generatePalette(contrast, paletteOptions));
       dispatch({ type: SET_PRIMARY_COLOR, primary: hexValue });
       dispatch({ type: SET_CONTRAST_COLOR, contrast: contrast });
     } catch (error) {
@@ -106,21 +124,17 @@ export default function PrimaryPage() {
               <div className="mt-20">
                 <h3 className="mx-2 text-3xl font-bold">Primary:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-                  {generatePalette(hexValue, { direction: 'both', nbVariation: 6, increment: 5 }).map(
-                    ({ name, color }) => (
-                      <ColorCard key={color} color={color} name={name} />
-                    ),
-                  )}
+                  {hexPalette.map(({ name, color }) => (
+                    <ColorCard key={color} color={color} name={name} />
+                  ))}
                 </div>
               </div>
               <div className="mt-10">
                 <h3 className="mx-2 text-3xl font-bold">Contrast:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-                  {generatePalette(contrast, { direction: 'both', nbVariation: 6, increment: 5 }).map(
-                    ({ name, color }) => (
-                      <ColorCard key={color} color={color} name={name} />
-                    ),
-                  )}
+                  {contrastPalette.map(({ name, color }) => (
+                    <ColorCard key={color} color={color} name={name} />
+                  ))}
                 </div>
               </div>
               <div className="flex flex-col mt-20 place-content-center">
