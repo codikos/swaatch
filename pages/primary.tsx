@@ -7,6 +7,7 @@ import ColorCard from '@components/ColorCard';
 
 import { generateContrast, generatePalette } from '@utils/colors';
 import { DispatchContext, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR, StateContext } from '@utils/state';
+import { isHighlight } from '@utils/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -25,15 +26,15 @@ export default function PrimaryPage() {
   useEffect(() => {
     if (state.primary) {
       setHexValue(state.primary);
-      setHexPalette(generatePalette(state.primary, paletteOptions));
+      setHexPalette(generatePalette(state.primary, { ...paletteOptions, name: 'primary' }));
 
       if (state.contrast) {
         setContrast(state.contrast);
-        setContrastPalette(generatePalette(state.contrast, paletteOptions));
+        setContrastPalette(generatePalette(state.contrast, { ...paletteOptions, name: 'contrast' }));
       } else {
         const initContrast = generateContrast(state.primary);
         setContrast(initContrast);
-        setContrastPalette(generatePalette(initContrast, paletteOptions));
+        setContrastPalette(generatePalette(initContrast, { ...paletteOptions, name: 'contrast' }));
       }
     }
   }, []);
@@ -46,10 +47,10 @@ export default function PrimaryPage() {
         setError('You must provide us with the primary color');
         return;
       }
-      setHexPalette(generatePalette(hexValue, paletteOptions));
+      setHexPalette(generatePalette(hexValue, { ...paletteOptions, name: 'primary' }));
       const contrast = generateContrast(hexValue);
       setContrast(contrast);
-      setContrastPalette(generatePalette(contrast, paletteOptions));
+      setContrastPalette(generatePalette(contrast, { ...paletteOptions, name: 'contrast' }));
       dispatch({ type: SET_PRIMARY_COLOR, primary: hexValue });
       dispatch({ type: SET_CONTRAST_COLOR, contrast: contrast });
     } catch (error) {
@@ -125,7 +126,7 @@ export default function PrimaryPage() {
                 <h3 className="mx-2 text-3xl font-bold">Primary:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {hexPalette.map(({ name, color }) => (
-                    <ColorCard key={color} color={color} name={name} />
+                    <ColorCard key={color} color={color} name={name} highlight={isHighlight(name)} />
                   ))}
                 </div>
               </div>
@@ -133,7 +134,7 @@ export default function PrimaryPage() {
                 <h3 className="mx-2 text-3xl font-bold">Contrast:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {contrastPalette.map(({ name, color }) => (
-                    <ColorCard key={color} color={color} name={name} />
+                    <ColorCard key={color} color={color} name={name} highlight={isHighlight(name)} />
                   ))}
                 </div>
               </div>
