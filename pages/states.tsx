@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useContext, useState, useRef } from 'react';
 import tinycolor from 'tinycolor2';
@@ -140,6 +141,16 @@ export default function StatesPage() {
               <ColorCard color={state.primary} name="Primary" />
               <ColorCard color={state.contrast} name="Contrast" />
               <ColorCard color={state.brand} name="Brand" />
+            </div>
+          </div>
+          <div className="flex flex-col mt-20 place-content-center">
+            <p className="text-2xl text-center">
+              If you like what you're seeing, let's go see what your palette looks like.
+            </p>
+            <div className="flex mt-10 place-content-center">
+              <Link href="/recap">
+                <a className="btn-blue">See your recap</a>
+              </Link>
             </div>
           </div>
         </div>
