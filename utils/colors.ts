@@ -38,7 +38,7 @@ export const generatePalette = (color: string, options: Options) => {
     return [
       { name: options.name, color: hexColor },
       ...Array.from({ length: nbVariation }).map((_, i) => ({
-        name: `${options.name}-dark-${(i + 1) * 100}`,
+        name: `${options.name}-${(i + 1) * 100}`,
         color: tinycolor(color)
           .darken((i + 1) * increment)
           .toHexString(),
@@ -50,7 +50,7 @@ export const generatePalette = (color: string, options: Options) => {
     return [
       ...Array.from({ length: nbVariation })
         .map((_, i: number) => ({
-          name: `${options.name}-light-${(i + 1) * 100}`,
+          name: `${options.name}-${(i + 1) * 100}`,
           color: tinycolor(color)
             .lighten((i + 1) * increment)
             .toHexString(),

@@ -79,7 +79,7 @@ body {
 }
 
 .container-input-color {
-  @apply flex flex-row justify-center mx-2 overflow-hidden border border-gray-200 rounded dark:border-gray-700;
+  @apply flex flex-row justify-center mr-2 overflow-hidden border border-gray-200 rounded dark:border-gray-700;
 }
 
 .label-input-color {
@@ -87,7 +87,7 @@ body {
 }
 
 .input-color {
-  @apply px-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:bg-gray-900 dark:text-white;
+  @apply h-full p-1 bg-white w-36 dark:bg-gray-900;
 }
 
 .input-color::placeholder {
@@ -95,7 +95,7 @@ body {
 }
 
 .scroll-btn {
-  @apply absolute bottom-0 flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full left-1/2 transform -translate-x-1/2 dark:bg-gray-800 xl:hidden 2xl:hidden;
+  @apply absolute bottom-0 flex items-center justify-center w-16 h-16 mb-16 bg-gray-100 rounded-full left-1/2 transform -translate-x-1/2 dark:bg-gray-800 xl:hidden 2xl:hidden;
 }
 
 /* Your own custom utilities */
