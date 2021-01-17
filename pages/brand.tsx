@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useRef, useState, useContext, useEffect } from 'react';
 import { isEmpty } from 'lodash/fp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import { generateBrand, generatePalette } from '@utils/colors';
 import { DispatchContext, StateContext, SET_BRAND_COLOR } from '@utils/state';
@@ -53,6 +53,7 @@ export default function BrandPage() {
     } catch (error) {
       setError(error.message);
       setBrand(error.brand);
+      setPaletteGenerated(generatePalette(error.brand, { ...paletteOptions, name: 'brand' }));
       dispatch({ type: SET_BRAND_COLOR, brand: error.brand });
     }
   };
@@ -78,26 +79,28 @@ export default function BrandPage() {
           </button>
         </div>
         <div ref={contentElm} className="page-right-container">
-          <form onSubmit={onClickGenerate}>
-            <div className="flex flex-row justify-center mt-5">
+          <form
+            onSubmit={onClickGenerate}
+            className="flex flex-col justify-center w-auto xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start"
+          >
+            <h2 className="mt-5">Pick the color:</h2>
+            <div className="flex flex-row justify-center mt-2 xl:justify-start 2xl:justify-start">
               <div className="container-input-color">
-                <label htmlFor="hex" className="label-input-color">
-                  #
-                </label>
                 <input
                   className="input-color"
                   onChange={(e) => {
                     setError('');
-                    setBrand(`#${e.target.value}`);
+                    setBrand(e.target.value);
                   }}
-                  type="text"
+                  type="color"
+                  value={brand}
                   name="hex"
                   id="hex"
                   placeholder="bada55"
                 />
               </div>
               <button type="submit" disabled={!brand} className="btn-blue">
-                Generate brand palette
+                <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>
           </form>

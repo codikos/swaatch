@@ -9,7 +9,7 @@ import { generateContrast, generatePalette } from '@utils/colors';
 import { DispatchContext, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR, StateContext } from '@utils/state';
 import { isHighlight } from '@utils/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function PrimaryPage() {
   const state = useContext(StateContext);
@@ -91,27 +91,29 @@ export default function PrimaryPage() {
           </button>
         </div>
         <div className="page-right-container" ref={contentElm}>
-          <form onSubmit={onClickGenerate}>
-            <div className="flex flex-row justify-center mt-5">
+          <form
+            onSubmit={onClickGenerate}
+            className="flex flex-col justify-center w-auto xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start"
+          >
+            <h2 className="flex justify-center mt-5 xl:justify-start 2xl:justify-start">Pick the color:</h2>
+            <div className="flex flex-row justify-center mt-5 xl:justify-start 2xl:justify-start">
               <div className="container-input-color">
-                <label htmlFor="hex" className="label-input-color">
-                  #
-                </label>
                 <input
                   className="input-color"
                   onChange={(e) => {
                     setError('');
                     setContrast('');
-                    setHexValue(`#${e.target.value}`);
+                    setHexValue(e.target.value);
                   }}
-                  type="text"
+                  value={hexValue}
+                  type="color"
                   name="hex"
                   id="hex"
-                  placeholder="404040"
+                  placeholder="#404040"
                 />
               </div>
               <button type="submit" disabled={!hexValue} className="btn-blue">
-                Generate contrast
+                <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>
           </form>
@@ -122,7 +124,7 @@ export default function PrimaryPage() {
           )}
           {contrast && (
             <>
-              <div className="mt-20">
+              <div className="mt-10">
                 <h3 className="mx-2 text-3xl font-bold">Primary:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {hexPalette.map(({ name, color }) => (
