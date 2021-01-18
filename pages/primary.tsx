@@ -10,6 +10,7 @@ import { DispatchContext, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR, StateContext } 
 import { isHighlight } from '@utils/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import Links from '@components/Links';
 
 export default function PrimaryPage() {
   const state = useContext(StateContext);
@@ -158,6 +159,7 @@ export default function PrimaryPage() {
           )}
         </div>
       </div>
+      <Links />
     </div>
   );
 }

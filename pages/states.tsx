@@ -14,6 +14,7 @@ import { DispatchContext, SET_STATE_COLORS, StateContext } from '@utils/state';
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
 import { isHighlight } from '@utils/index';
+import Links from '@components/Links';
 
 const SUCCESS_RANGE = [90, 150];
 const INFO_RANGE = [210, 270];
@@ -159,6 +160,7 @@ export default function StatesPage() {
           </div>
         </div>
       </div>
+      <Links />
     </div>
   );
 }
