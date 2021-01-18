@@ -75,7 +75,7 @@ body {
 }
 
 .page-right-container {
-  @apply flex flex-col flex-grow min-h-screen px-4 xl:h-screen 2xl:h-screen py-28 2xl:overflow-auto xl:overflow-auto xl:px-10 2xl:px-10;
+  @apply flex flex-col flex-grow min-h-screen xl:h-screen 2xl:h-screen 2xl:overflow-auto xl:overflow-auto;
 }
 
 .container-input-color {

@@ -73,7 +73,12 @@ export default function BrandPage() {
           <h1 className="page-title from-blue-900 to-green-500 dark:from-blue-500 dark:to-green-400">
             Now the color of your brand!
           </h1>
-          <p className="mt-5">This should be a vivid color, with a high contrast against your primary color.</p>
+          <p className="mt-5">It's time to pick your brand color.</p>
+          <p className="mt-5">This should be a vivid color, with a high contrast ratio against your primary color.</p>
+          <p className="mt-5">
+            If your brand color contrast ratio is not high enough for it to be readable we will calculate the nearest
+            readable color in the same hue.
+          </p>
           <button className="scroll-btn" onClick={scrollToContent}>
             <FontAwesomeIcon icon={faArrowDown} />
           </button>
@@ -81,10 +86,10 @@ export default function BrandPage() {
         <div ref={contentElm} className="page-right-container">
           <form
             onSubmit={onClickGenerate}
-            className="flex flex-col justify-center w-auto xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start"
+            className="flex flex-col justify-center w-auto px-4 pt-28 xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start xl:px-10 2xl:px-10"
           >
-            <h2 className="mt-5">Pick the color:</h2>
-            <div className="flex flex-row justify-center mt-2 xl:justify-start 2xl:justify-start">
+            <h2 className="mt-5 text-center 2xl:text-left xl:text-left">Pick the color:</h2>
+            <div className="flex flex-row justify-center mt-3 xl:justify-start 2xl:justify-start">
               <div className="container-input-color">
                 <input
                   className="input-color"
@@ -110,12 +115,12 @@ export default function BrandPage() {
             </div>
           )}
           {!isEmpty(paletteGenerated) && (
-            <>
+            <div className="px-4 py-4 xl:px-10 2xl:px-10">
               <div className="mt-10">
                 <h3 className="mx-2 mb-5 text-3xl font-bold">Brand:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {paletteGenerated.map(({ name, color }) => (
-                    <ColorCard key={color} color={color} name={name} highlight={isHighlight(name)} />
+                    <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
                   ))}
                 </div>
               </div>
@@ -123,21 +128,25 @@ export default function BrandPage() {
                 <h3 className="mx-2 mb-5 text-3xl font-bold">Primary:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
                   {generatePalette(state.primary, { ...paletteOptions, name: 'primary' }).map(({ name, color }) => (
-                    <ColorCard key={color} color={color} name={name} highlight={isHighlight(name)} />
+                    <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col mt-20 place-content-center">
-                <p className="text-2xl text-center">
-                  If you are satisfied with those, we can go on to chose your state colors
-                </p>
-                <div className="flex mt-10 place-content-center">
-                  <Link href="/states">
-                    <a className="btn-blue">Choose your state colors</a>
-                  </Link>
-                </div>
+            </div>
+          )}
+          {!isEmpty(paletteGenerated) && (
+            <div className="flex flex-col p-10 mt-20 bg-gray-200 dark:bg-gray-700 place-content-center">
+              <p className="text-xl text-center">
+                If you are satisfied with those, we can go on to chose your state colors.
+              </p>
+              <div className="flex mt-10 place-content-center">
+                <Link href="/states">
+                  <a className="btn-blue">
+                    <FontAwesomeIcon icon={faArrowRight} /> Go
+                  </a>
+                </Link>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

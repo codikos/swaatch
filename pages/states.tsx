@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useContext, useState, useRef } from 'react';
 import tinycolor from 'tinycolor2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle as farCheckCircle } from '@fortawesome/free-regular-svg-icons';
 
 import { generatePalette, generateStateColor } from '@utils/colors';
@@ -98,58 +98,62 @@ export default function StatesPage() {
           </button>
         </div>
         <div ref={contentElm} className="page-right-container">
-          {Object.values(displayedStates)
-            .map(Boolean)
-            .includes(true) && (
+          <div className="flex flex-col justify-center w-auto px-4 pt-28 xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start xl:px-10 2xl:px-10">
+            {Object.values(displayedStates)
+              .map(Boolean)
+              .includes(true) && (
+              <div className="mt-10">
+                <h3 className="mx-2 text-3xl font-bold">State colors</h3>
+                <div className="flex flex-col mt-2">
+                  {Object.entries(displayedStates)
+                    .filter(([_, color]) => Boolean(color))
+                    .map(([state, color]) => (
+                      <Fragment key={color}>
+                        <h3 className="mx-2 mt-5 text-2xl font-bold capitalize">
+                          <label className="">
+                            <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : ''}`}>
+                              <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
+                            </span>
+                            <input
+                              onClick={() => toggleSelectState(state)}
+                              className="hidden"
+                              type="checkbox"
+                              checked={selectedStates[state]}
+                              value={selectedStates[state]}
+                            />
+                            {state}
+                          </label>
+                        </h3>
+                        <div key={state} className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+                          {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5, name: state }).map(
+                            ({ name, color }) => (
+                              <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
+                            ),
+                          )}
+                        </div>
+                      </Fragment>
+                    ))}
+                </div>
+              </div>
+            )}
             <div className="mt-10">
-              <h3 className="mx-2 text-3xl font-bold">State colors</h3>
-              <div className="flex flex-col mt-2">
-                {Object.entries(displayedStates)
-                  .filter(([_, color]) => Boolean(color))
-                  .map(([state, color]) => (
-                    <Fragment key={color}>
-                      <h3 className="mx-2 mt-5 text-2xl font-bold capitalize">
-                        <label className="">
-                          <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : ''}`}>
-                            <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
-                          </span>
-                          <input
-                            onClick={() => toggleSelectState(state)}
-                            className="hidden"
-                            type="checkbox"
-                            checked={selectedStates[state]}
-                            value={selectedStates[state]}
-                          />
-                          {state}
-                        </label>
-                      </h3>
-                      <div key={state} className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
-                        {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5, name: state }).map(
-                          ({ name, color }) => (
-                            <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
-                          ),
-                        )}
-                      </div>
-                    </Fragment>
-                  ))}
+              <h3 className="mx-2 text-3xl font-bold">Reminder</h3>
+              <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
+                <ColorCard color={state.primary} name="Primary" />
+                <ColorCard color={state.contrast} name="Contrast" />
+                <ColorCard color={state.brand} name="Brand" />
               </div>
             </div>
-          )}
-          <div className="mt-10">
-            <h3 className="mx-2 text-3xl font-bold">Reminder</h3>
-            <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-              <ColorCard color={state.primary} name="Primary" />
-              <ColorCard color={state.contrast} name="Contrast" />
-              <ColorCard color={state.brand} name="Brand" />
-            </div>
           </div>
-          <div className="flex flex-col mt-20 place-content-center">
-            <p className="text-2xl text-center">
+          <div className="flex flex-col p-10 mt-20 bg-gray-200 dark:bg-gray-700 place-content-center">
+            <p className="text-xl text-center">
               If you like what you're seeing, let's go see what your palette looks like.
             </p>
             <div className="flex mt-10 place-content-center">
               <Link href="/recap">
-                <a className="btn-blue">See your recap</a>
+                <a className="btn-blue">
+                  <FontAwesomeIcon icon={faArrowRight} /> Go
+                </a>
               </Link>
             </div>
           </div>
