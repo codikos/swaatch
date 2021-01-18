@@ -85,8 +85,27 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
         <div className="page-left-container">
           <h1 className="page-title from-pink-500 to-yellow-500">Let's see your palette now!</h1>
           <p className="mt-5">Here is the full color palette.</p>
-          <p className="mt-5">We also generated a block of CSS code that includes all your colors in CSS variables.</p>
-          <p className="mt-5">All you need to do to use it in your application is to copy it to your clipboard.</p>
+          <p className="mt-5">
+            We also generated a block of CSS code that includes all your colors in CSS custom properties. There are some
+            interesting articles to learn about them{' '}
+            <a
+              target="_blank"
+              href="https://developer.mozilla.org/en-US/docs/Web/CSS/--*"
+              className="text-blue-500 hover:underline active:text-purple-500"
+            >
+              here
+            </a>{' '}
+            and{' '}
+            <a
+              target="_blank"
+              href="https://css-tricks.com/css-custom-properties-theming/"
+              className="text-blue-500 hover:underline active:text-purple-500"
+            >
+              here
+            </a>
+            .
+          </p>
+          <p className="mt-5">Now, all you need to do is to copy it in your project and you're good to go.</p>
           <button className="scroll-btn" onClick={scrollToContent}>
             <FontAwesomeIcon icon={faArrowDown} />
           </button>
@@ -131,7 +150,7 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
             <div className="relative flex flex-col p-2 mx-2 mt-10 bg-gray-200 rounded-md dark:bg-gray-900">
               <button
                 onClick={copyCSS}
-                className="absolute top-0 right-0 px-4 py-2 m-2 text-sm bg-black rounded-bl-md bg-opacity-30"
+                className="absolute top-0 right-0 px-4 py-2 m-2 text-sm bg-black rounded-bl-md bg-opacity-30 hover:text-blue-500"
               >
                 <FontAwesomeIcon icon={faCopy} /> Copy to clipboard
               </button>
