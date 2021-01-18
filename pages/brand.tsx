@@ -12,6 +12,7 @@ import { DispatchContext, StateContext, SET_BRAND_COLOR } from '@utils/state';
 import ColorCard from '@components/ColorCard';
 import Nav from '@components/Nav';
 import { isHighlight } from '@utils/index';
+import Links from '@components/Links';
 
 export default function BrandPage() {
   const [brand, setBrand] = useState('');
@@ -150,6 +151,7 @@ export default function BrandPage() {
           )}
         </div>
       </div>
+      <Links />
     </div>
   );
 }

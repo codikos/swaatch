@@ -14,6 +14,7 @@ import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
 import { vs, vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ColorCard from '@components/ColorCard';
+import Links from '@components/Links';
 
 SyntaxHighlighter.registerLanguage('css', css);
 
@@ -141,6 +142,7 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
           </div>
         </div>
       </div>
+      <Links />
     </div>
   );
 }
