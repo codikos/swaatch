@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
+import Nav from '@components/Nav';
+
 export default function IndexPage() {
   const { theme } = useTheme();
   const imageSrc = `/1x/logo-full-${theme}.png`;
@@ -15,6 +17,7 @@ export default function IndexPage() {
           content="Swaatch is an application that allows users to easily generate color palettes for their design systems. It can calculate the best contrasts based on WCAG recommendations."
         />
       </Head>
+      <Nav />
       <div className="flex flex-col h-screen p-10 bg-white dark:bg-gray-900 place-content-center">
         <div className="mx-auto">
           <Image src={imageSrc} layout="intrinsic" width={509} height={150} alt="Swaatch" />
