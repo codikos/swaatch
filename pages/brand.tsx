@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState, useContext, useEffect } from 'react';
 import { isEmpty } from 'lodash/fp';
@@ -113,6 +114,11 @@ export default function BrandPage() {
           {error && (
             <div className="container mx-auto">
               <div className="px-20 py-10 mt-10 font-bold text-center text-white bg-yellow-600 rounded">{error}</div>
+            </div>
+          )}
+          {isEmpty(paletteGenerated) && (
+            <div className="flex items-center justify-center m-auto bg-white rounded-full h-72 w-72 dark:bg-gray-900">
+              <Image src="/illustrations/undraw_color_palette_yamk.svg" width={280} height={200} layout="intrinsic" />
             </div>
           )}
           {!isEmpty(paletteGenerated) && (
