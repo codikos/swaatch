@@ -14,22 +14,31 @@ export default function Nav() {
 
   return (
     <nav className="fixed z-10 flex justify-between w-screen bg-white xl:bg-transparent 2xl:bg-transparent dark:bg-gray-900 xl:dark:bg-transparent 2xl:dark:bg-transparent">
-      <ul className="flex items-center p-6">
-        {router.pathname !== '/primary' && router.pathname !== '/' && (
-          <li>
-            <LinkIcon href="/" title="Start over" icon={faAngleDoubleLeft} />
-          </li>
-        )}
+      <div className="flex flex-row items-center p-4">
         {router.pathname !== '/' && (
-          <li>
-            {router.pathname === '/primary' && <LinkIcon href="/" title="Home" icon={faHome} />}
-            {router.pathname !== '/primary' && <ButtonBack />}
-          </li>
+          <Link href="/">
+            <div className="items-center justify-center hidden w-20 h-20 m-auto mr-6 rounded-full cursor-pointer transition xl:flex 2xl:flex xl:relative 2xl:relative xl:hover:bg-gray-100 2xl:hover:bg-gray-100 xl:dark:hover:bg-gray-800 2xl:dark:hover:bg-gray-800">
+              <Image src="/1x/logo.png" layout="intrinsic" width={50} height={50} alt="Swaatch" />
+            </div>
+          </Link>
         )}
-      </ul>
+        <ul className="flex items-center">
+          {router.pathname !== '/primary' && router.pathname !== '/' && (
+            <li>
+              <LinkIcon href="/" title="Start over" icon={faAngleDoubleLeft} />
+            </li>
+          )}
+          {router.pathname !== '/' && (
+            <li>
+              {router.pathname === '/primary' && <LinkIcon href="/" title="Home" icon={faHome} />}
+              {router.pathname !== '/primary' && <ButtonBack />}
+            </li>
+          )}
+        </ul>
+      </div>
       {router.pathname !== '/' && (
         <Link href="/">
-          <div className="absolute flex items-center justify-center w-20 h-20 m-auto rounded-full cursor-pointer hover:bg-gray-100 xl:hover:bg-white 2xl:hover:bg-white xl:dark:hover:bg-gray-900 2xl:dark:hover:bg-gray-900 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 dark:hover:bg-gray-800">
+          <div className="absolute flex items-center justify-center w-20 h-20 m-auto rounded-full cursor-pointer xl:hidden 2xl:hidden hover:bg-gray-100 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 dark:hover:bg-gray-800">
             <Image src="/1x/logo.png" layout="intrinsic" width={50} height={50} alt="Swaatch" />
           </div>
         </Link>
