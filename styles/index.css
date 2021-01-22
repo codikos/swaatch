@@ -55,7 +55,7 @@ body {
 }
 
 .btn-nav {
-  @apply flex items-center justify-center mr-4 text-gray-700 no-underline rounded-full cursor-pointer lg:px-8 xl:px-8 2xl:px-8 transition text-accent-1 h-14 w-14 min-w-max dark:text-gray-200;
+  @apply flex items-center justify-center w-10 h-10 mr-2 text-gray-700 no-underline rounded-full cursor-pointer lg:px-4 xl:px-4 2xl:px-4 transition text-accent-1 min-w-max dark:text-gray-200;
 }
 
 .btn-nav:hover {
