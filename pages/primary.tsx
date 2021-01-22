@@ -11,6 +11,7 @@ import { isHighlight } from '@utils/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Links from '@components/Links';
+import Image from 'next/image';
 
 export default function PrimaryPage() {
   const state = useContext(StateContext);
@@ -121,6 +122,11 @@ export default function PrimaryPage() {
           {error && (
             <div className="container mx-auto">
               <div className="px-20 py-10 mt-10 font-bold text-center text-white bg-yellow-600 rounded">{error}</div>
+            </div>
+          )}
+          {!contrast && (
+            <div className="flex items-center justify-center m-auto bg-white rounded-full h-72 w-72 dark:bg-gray-900">
+              <Image src="/illustrations/undraw_add_color_19gv.svg" width={315} height={200} layout="intrinsic" />
             </div>
           )}
           {contrast && (
