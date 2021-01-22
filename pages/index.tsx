@@ -20,7 +20,7 @@ export default function IndexPage() {
       <Nav />
       <div className="flex flex-col h-screen p-10 bg-white dark:bg-gray-900 place-content-center">
         <div className="mx-auto">
-          <Image src={imageSrc} layout="intrinsic" width={509} height={150} alt="Swaatch" />
+          <Image src={imageSrc} layout="intrinsic" width={339} height={100} alt="Swaatch" />
         </div>
         <h2 className="mt-10 text-2xl text-center">
           Easily generate accessible color palettes that follows{' '}
