@@ -21,12 +21,16 @@
     "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.10",
     "@types/react": "^17.0.0",
     "@types/react-syntax-highlighter": "^13.5.0",
     "@types/tinycolor2": "^1.4.2",
     "autoprefixer": "10.0.2",
+    "commitizen": "^4.2.3",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^4.3.6",
     "postcss": "8.1.7",
     "tailwindcss": "^2.0.1",
@@ -35,7 +39,90 @@
   "license": "MIT",
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "tsc --noEmit -p ./tsconfig.json"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "rules": {
+      "body-leading-blank": [
+        1,
+        "always"
+      ],
+      "body-max-line-length": [
+        2,
+        "always",
+        100
+      ],
+      "footer-leading-blank": [
+        1,
+        "always"
+      ],
+      "footer-max-line-length": [
+        2,
+        "always",
+        100
+      ],
+      "header-max-length": [
+        2,
+        "always",
+        100
+      ],
+      "scope-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "subject-case": [
+        2,
+        "never",
+        [
+          "sentence-case",
+          "start-case",
+          "pascal-case",
+          "upper-case"
+        ]
+      ],
+      "subject-empty": [
+        2,
+        "never"
+      ],
+      "subject-full-stop": [
+        2,
+        "never",
+        "."
+      ],
+      "type-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "type-empty": [
+        2,
+        "never"
+      ],
+      "type-enum": [
+        2,
+        "always",
+        [
+          "build",
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "revert",
+          "style",
+          "test"
+        ]
+      ]
     }
   }
 }
