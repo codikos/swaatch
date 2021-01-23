@@ -24,7 +24,15 @@ export default function IndexPage() {
         </div>
         <h2 className="mt-10 text-2xl text-center">
           Easily generate accessible color palettes that follows{' '}
-          <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.0 recommendations.
+          <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.0{' '}
+          <a
+            className="text-blue-500 hover:underline"
+            href="https://www.w3.org/WAI/WCAG21/quickref/?currentsidebar=%23col_overview&versions=2.0&showtechniques=143#contrast-minimum"
+            target="_blank"
+          >
+            recommendations
+          </a>
+          .
         </h2>
         <div className="flex flex-row mt-10 place-content-center">
           <Link href="/primary">
