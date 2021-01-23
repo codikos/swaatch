@@ -16,11 +16,6 @@ import ColorCard from '@components/ColorCard';
 import { isHighlight } from '@utils/index';
 import Links from '@components/Links';
 
-const SUCCESS_RANGE = [90, 150];
-const INFO_RANGE = [210, 270];
-const WARNING_RANGE = [0, 60];
-const ERROR_RANGE = [-30, 30];
-
 export default function StatesPage() {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
@@ -48,10 +43,10 @@ export default function StatesPage() {
     const saturation = Math.floor(brandHSL.s * 100);
     const luminosity = Math.floor(brandHSL.l * 100);
     const states = {
-      success: generateStateColor(SUCCESS_RANGE, saturation, luminosity),
-      info: generateStateColor(INFO_RANGE, saturation, luminosity),
-      warning: generateStateColor(WARNING_RANGE, saturation, luminosity),
-      error: generateStateColor(ERROR_RANGE, saturation, luminosity),
+      success: generateStateColor('success', saturation, luminosity),
+      info: generateStateColor('info', saturation, luminosity),
+      warning: generateStateColor('warning', saturation, luminosity),
+      error: generateStateColor('error', saturation, luminosity),
     };
 
     setDisplayedState(states);
@@ -109,14 +104,14 @@ export default function StatesPage() {
                   {Object.entries(displayedStates)
                     .filter(([_, color]) => Boolean(color))
                     .map(([state, color]) => (
-                      <Fragment key={color}>
+                      <Fragment key={`${state}-${color}`}>
                         <h3 className="mx-2 mt-5 text-2xl font-bold capitalize">
                           <label className="">
                             <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : ''}`}>
                               <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
                             </span>
                             <input
-                              onClick={() => toggleSelectState(state)}
+                              onChange={() => toggleSelectState(state)}
                               className="hidden"
                               type="checkbox"
                               checked={selectedStates[state]}
@@ -125,10 +120,15 @@ export default function StatesPage() {
                             {state}
                           </label>
                         </h3>
-                        <div key={state} className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+                        <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
                           {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5, name: state }).map(
                             ({ name, color }) => (
-                              <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
+                              <ColorCard
+                                key={`${name}-${color}`}
+                                color={color}
+                                name={name}
+                                highlight={isHighlight(name)}
+                              />
                             ),
                           )}
                         </div>

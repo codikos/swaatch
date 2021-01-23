@@ -1,7 +1,7 @@
 import tinycolor from 'tinycolor2';
 
 const INCREMENT = 5;
-const MAX_TRIES = 20;
+const MAX_TRIES = 50;
 
 export const generateContrast = (primary: string) => {
   const primaryTiny = tinycolor(primary);
@@ -102,8 +102,16 @@ export const generateBrand = (brand: string, primary: string) => {
   return brand;
 };
 
-export const generateStateColor = (range: number[], saturation: number, luminosity: number) => {
-  const predictedStateHue = range[0];
+const RANGES = {
+  success: [100, 140],
+  info: [220, 260],
+  warning: [20, 60],
+  error: [-10, 10],
+};
+
+export const generateStateColor = (state: string, saturation: number, luminosity: number) => {
+  const range = RANGES[state];
+  const predictedStateHue = (range[1] - range[0]) / 2 + range[0];
   const predictedStateSaturation = saturation;
   const predictedStateLuminosity = luminosity;
 
@@ -120,7 +128,7 @@ export const generateStateColor = (range: number[], saturation: number, luminosi
   if (!isPredictedStateColorReadable) {
     while (!tinycolor.isReadable(predictedStateColor, 'white')) {
       if (tries >= MAX_TRIES || predictedStateColor.toHsl().h >= range[1]) break;
-      predictedStateColor = predictedStateColor.spin(5);
+      predictedStateColor = predictedStateColor.spin(0.5);
       tries++;
     }
   }
