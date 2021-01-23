@@ -17,9 +17,12 @@ export default function Nav() {
       <div className="flex flex-row items-center p-4">
         {router.pathname !== '/' && (
           <Link href="/">
-            <div className="items-center justify-center hidden w-20 h-20 m-auto mr-6 rounded-full cursor-pointer transition xl:flex 2xl:flex xl:relative 2xl:relative xl:hover:bg-gray-100 2xl:hover:bg-gray-100 xl:dark:hover:bg-gray-800 2xl:dark:hover:bg-gray-800">
+            <a
+              title="Swaatch"
+              className="items-center justify-center hidden w-20 h-20 m-auto mr-6 rounded-full outline-none cursor-pointer transition xl:flex 2xl:flex xl:relative 2xl:relative xl:hover:bg-gray-100 2xl:hover:bg-gray-100 xl:dark:hover:bg-gray-800 2xl:dark:hover:bg-gray-800 focus:ring-2 focus:ring-gray-700 dark:focus:ring-gray-200"
+            >
               <Image src="/1x/logo.png" layout="intrinsic" width={50} height={50} alt="Swaatch" />
-            </div>
+            </a>
           </Link>
         )}
         <ul className="flex items-center">
@@ -38,9 +41,12 @@ export default function Nav() {
       </div>
       {router.pathname !== '/' && (
         <Link href="/">
-          <div className="absolute flex items-center justify-center w-20 h-20 m-auto rounded-full cursor-pointer xl:hidden 2xl:hidden hover:bg-gray-100 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 dark:hover:bg-gray-800">
+          <a
+            title="swaatch"
+            className="absolute flex items-center justify-center w-20 h-20 m-auto rounded-full outline-none cursor-pointer xl:hidden 2xl:hidden hover:bg-gray-100 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 dark:hover:bg-gray-800 focus:ring-2 focus:ring-gray-700 dark:focus:ring-gray-200"
+          >
             <Image src="/1x/logo.png" layout="intrinsic" width={50} height={50} alt="Swaatch" />
-          </div>
+          </a>
         </Link>
       )}
       <ul className="flex items-center p-4">

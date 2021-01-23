@@ -26,7 +26,7 @@ export default function IndexPage() {
           Easily generate accessible color palettes that follows{' '}
           <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.0{' '}
           <a
-            className="text-blue-500 hover:underline"
+            className="text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
             href="https://www.w3.org/WAI/WCAG21/quickref/?currentsidebar=%23col_overview&versions=2.0&showtechniques=143#contrast-minimum"
             target="_blank"
           >
