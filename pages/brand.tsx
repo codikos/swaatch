@@ -7,13 +7,14 @@ import { isEmpty } from 'lodash/fp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { generateBrand, generatePalette } from '@utils/colors';
+import { Color, generateBrand, generatePalette } from '@utils/colors';
 import { DispatchContext, StateContext, SET_BRAND_COLOR } from '@utils/state';
 
 import ColorCard from '@components/ColorCard';
 import Nav from '@components/Nav';
 import { isHighlight } from '@utils/index';
 import Links from '@components/Links';
+import HelpTitle from '@components/HelpTitle';
 
 export default function BrandPage() {
   const [brand, setBrand] = useState('');
@@ -32,7 +33,9 @@ export default function BrandPage() {
     }
     if (state.brand) {
       setBrand(state.brand);
-      setPaletteGenerated(generatePalette(state.brand, { ...paletteOptions, name: 'brand' }));
+      setPaletteGenerated(
+        generatePalette(state.brand, { ...paletteOptions, colorToCompare: state.primary, name: 'brand' }),
+      );
     }
   }, []);
 
@@ -50,12 +53,16 @@ export default function BrandPage() {
       }
       const brandColor = generateBrand(brand, state.primary);
       setBrand(brandColor);
-      setPaletteGenerated(generatePalette(brandColor, { ...paletteOptions, name: 'brand' }));
+      setPaletteGenerated(
+        generatePalette(brandColor, { ...paletteOptions, colorToCompare: state.primary, name: 'brand' }),
+      );
       dispatch({ type: SET_BRAND_COLOR, brand: brandColor });
     } catch (error) {
       setError(error.message);
       setBrand(error.brand);
-      setPaletteGenerated(generatePalette(error.brand, { ...paletteOptions, name: 'brand' }));
+      setPaletteGenerated(
+        generatePalette(error.brand, { ...paletteOptions, colorToCompare: state.primary, name: 'brand' }),
+      );
       dispatch({ type: SET_BRAND_COLOR, brand: error.brand });
     }
   };
@@ -124,10 +131,19 @@ export default function BrandPage() {
           {!isEmpty(paletteGenerated) && (
             <div className="px-4 py-4 xl:px-10 2xl:px-10">
               <div className="mt-10">
-                <h3 className="mx-2 mb-5 text-3xl font-bold">Brand:</h3>
+                <HelpTitle
+                  title="Brand:"
+                  text="All contrast scores are calculated in comparison to the primary base value. The score minimum to be readable is 4.5:1."
+                />
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-                  {paletteGenerated.map(({ name, color }) => (
-                    <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
+                  {paletteGenerated.map(({ name, color, contrastScore }: Color) => (
+                    <ColorCard
+                      key={name}
+                      color={color}
+                      name={name}
+                      contrastScore={contrastScore}
+                      highlight={isHighlight(name)}
+                    />
                   ))}
                 </div>
               </div>
