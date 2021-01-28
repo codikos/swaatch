@@ -3,6 +3,9 @@ import tinycolor from 'tinycolor2';
 const INCREMENT = 5;
 const MAX_TRIES = 50;
 
+const getContrastScore = (color1: string, color2: string) =>
+  Math.ceil(tinycolor.readability(color1, color2) * 100) / 100;
+
 export const generateContrast = (primary: string) => {
   const primaryTiny = tinycolor(primary);
   const direction = primaryTiny.isDark() ? 'lighten' : 'darken';
@@ -28,54 +31,93 @@ type Options = {
   nbVariation: number;
   increment: number;
   direction: string;
+  colorToCompare?: string;
+};
+
+export type Color = {
+  name: string;
+  color: string;
+  highlight?: boolean;
+  contrastScore?: number;
 };
 
 export const generatePalette = (color: string, options: Options) => {
-  const { nbVariation = 6, increment = 5, direction = 'both' } = options;
+  const { nbVariation = 6, increment = 5, direction = 'both', colorToCompare } = options;
   const hexColor = tinycolor(color).toHexString();
 
   if (direction === 'right') {
     return [
-      { name: options.name, color: hexColor },
-      ...Array.from({ length: nbVariation }).map((_, i) => ({
-        name: `${options.name}-${(i + 1) * 100}`,
-        color: tinycolor(color)
+      {
+        name: options.name,
+        color: hexColor,
+        highlight: true,
+        ...(colorToCompare && { contrastScore: getContrastScore(hexColor, colorToCompare) }),
+      },
+      ...Array.from({ length: nbVariation }).map((_, i) => {
+        const c = tinycolor(color)
           .darken((i + 1) * increment)
-          .toHexString(),
-      })),
+          .toHexString();
+        return {
+          name: `${options.name}-${(i + 1) * 100}`,
+          color: c,
+          ...(colorToCompare && { contrastScore: getContrastScore(c, colorToCompare) }),
+        };
+      }),
     ];
   }
 
   if (direction === 'left') {
     return [
       ...Array.from({ length: nbVariation })
-        .map((_, i: number) => ({
-          name: `${options.name}-${(i + 1) * 100}`,
-          color: tinycolor(color)
+        .map((_, i: number) => {
+          const c = tinycolor(color)
             .lighten((i + 1) * increment)
-            .toHexString(),
-        }))
+            .toHexString();
+          return {
+            name: `${options.name}-${(i + 1) * 100}`,
+            color: c,
+            ...(colorToCompare && { contrastScore: getContrastScore(c, colorToCompare) }),
+          };
+        })
         .reverse(),
-      { name: options.name, color: hexColor },
+      {
+        name: options.name,
+        color: hexColor,
+        highlight: true,
+        ...(colorToCompare && { contrastScore: getContrastScore(hexColor, colorToCompare) }),
+      },
     ];
   }
 
   return [
     ...Array.from({ length: Math.floor(nbVariation / 2) })
-      .map((_, i) => ({
-        name: `${options.name}-light-${(i + 1) * 100}`,
-        color: tinycolor(color)
+      .map((_, i) => {
+        const c = tinycolor(color)
           .lighten((i + 1) * increment)
-          .toHexString(),
-      }))
+          .toHexString();
+        return {
+          name: `${options.name}-light-${(i + 1) * 100}`,
+          color: c,
+          ...(colorToCompare && { contrastScore: getContrastScore(c, colorToCompare) }),
+        };
+      })
       .reverse(),
-    { name: options.name, color: hexColor },
-    ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) => ({
-      name: `${options.name}-dark-${(i + 1) * 100}`,
-      color: tinycolor(color)
+    {
+      name: options.name,
+      color: hexColor,
+      highlight: true,
+      ...(colorToCompare && { contrastScore: getContrastScore(hexColor, colorToCompare) }),
+    },
+    ...Array.from({ length: Math.floor(nbVariation / 2) }).map((_, i) => {
+      const c = tinycolor(color)
         .darken((i + 1) * increment)
-        .toHexString(),
-    })),
+        .toHexString();
+      return {
+        name: `${options.name}-dark-${(i + 1) * 100}`,
+        color: c,
+        ...(colorToCompare && { contrastScore: getContrastScore(c, colorToCompare) }),
+      };
+    }),
   ];
 };
 

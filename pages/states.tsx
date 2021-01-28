@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle as farCheckCircle } from '@fortawesome/free-regular-svg-icons';
 
-import { generatePalette, generateStateColor } from '@utils/colors';
+import { Color, generatePalette, generateStateColor } from '@utils/colors';
 import { DispatchContext, SET_STATE_COLORS, StateContext } from '@utils/state';
 
 import Nav from '@components/Nav';
@@ -73,7 +73,7 @@ export default function StatesPage() {
         <title>Swaatch - Time to set your application state colors.</title>
         <meta
           name="description"
-          content="You can now select all the state colors your application needs and adjust them."
+          content="You can now select all the state colors your application needs and adjust them. State colors are generally used to indicate success, informations, warnings or failures. Most of the times they are in shades of green, blue, orange and red respectively. They are usually used as a background for UI components."
         />
       </Head>
       <Nav />
@@ -88,6 +88,10 @@ export default function StatesPage() {
             <strong className="text-green-600">green</strong>, <strong className="text-blue-600">blue</strong>,{' '}
             <strong className="text-yellow-600">orange</strong> and <strong className="text-red-600">red</strong>{' '}
             respectively.
+          </p>
+          <p className="mt-5">
+            Those colors would usually be used as a <strong>background</strong> for <strong>UI components</strong> like
+            buttons, badges, notifications, snackbars, etc...
           </p>
           <button className="scroll-btn" onClick={scrollToContent}>
             <FontAwesomeIcon icon={faArrowDown} />
@@ -121,16 +125,21 @@ export default function StatesPage() {
                           </label>
                         </h3>
                         <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
-                          {generatePalette(color, { direction: 'both', nbVariation: 6, increment: 5, name: state }).map(
-                            ({ name, color }) => (
-                              <ColorCard
-                                key={`${name}-${color}`}
-                                color={color}
-                                name={name}
-                                highlight={isHighlight(name)}
-                              />
-                            ),
-                          )}
+                          {generatePalette(color, {
+                            direction: 'both',
+                            nbVariation: 6,
+                            increment: 5,
+                            name: state,
+                            colorToCompare: 'white',
+                          }).map(({ name, color, contrastScore }: Color) => (
+                            <ColorCard
+                              key={`${name}-${color}`}
+                              color={color}
+                              name={name}
+                              contrastScore={contrastScore}
+                              highlight={isHighlight(name)}
+                            />
+                          ))}
                         </div>
                       </Fragment>
                     ))}

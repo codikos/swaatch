@@ -5,13 +5,13 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
 
-import { generateContrast, generatePalette } from '@utils/colors';
+import { Color, generateContrast, generatePalette } from '@utils/colors';
 import { DispatchContext, SET_CONTRAST_COLOR, SET_PRIMARY_COLOR, StateContext } from '@utils/state';
-import { isHighlight } from '@utils/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Links from '@components/Links';
 import Image from 'next/image';
+import HelpTitle from '@components/HelpTitle';
 
 export default function PrimaryPage() {
   const state = useContext(StateContext);
@@ -32,11 +32,15 @@ export default function PrimaryPage() {
 
       if (state.contrast) {
         setContrast(state.contrast);
-        setContrastPalette(generatePalette(state.contrast, { ...paletteOptions, name: 'contrast' }));
+        setContrastPalette(
+          generatePalette(state.contrast, { ...paletteOptions, name: 'contrast', colorToCompare: state.primary }),
+        );
       } else {
         const initContrast = generateContrast(state.primary);
         setContrast(initContrast);
-        setContrastPalette(generatePalette(initContrast, { ...paletteOptions, name: 'contrast' }));
+        setContrastPalette(
+          generatePalette(initContrast, { ...paletteOptions, name: 'contrast', colorToCompare: state.primary }),
+        );
       }
     }
   }, []);
@@ -52,7 +56,13 @@ export default function PrimaryPage() {
       setHexPalette(generatePalette(hexValue, { ...paletteOptions, name: 'primary' }));
       const contrast = generateContrast(hexValue);
       setContrast(contrast);
-      setContrastPalette(generatePalette(contrast, { ...paletteOptions, name: 'contrast' }));
+      setContrastPalette(
+        generatePalette(contrast, {
+          ...paletteOptions,
+          name: 'contrast',
+          colorToCompare: hexValue,
+        }),
+      );
       dispatch({ type: SET_PRIMARY_COLOR, primary: hexValue });
       dispatch({ type: SET_CONTRAST_COLOR, contrast: contrast });
     } catch (error) {
@@ -134,16 +144,25 @@ export default function PrimaryPage() {
               <div className="mt-10">
                 <h3 className="mx-2 text-3xl font-bold">Primary:</h3>
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-                  {hexPalette.map(({ name, color }) => (
-                    <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
+                  {hexPalette.map(({ name, color, highlight }: Color) => (
+                    <ColorCard key={name} color={color} name={name} highlight={highlight} />
                   ))}
                 </div>
               </div>
               <div className="mt-10">
-                <h3 className="mx-2 text-3xl font-bold">Contrast:</h3>
+                <HelpTitle
+                  title="Contrast:"
+                  text="All contrast scores are calculated in comparison to the primary base value. The score minimum to be readable is 4.5:1."
+                />
                 <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
-                  {contrastPalette.map(({ name, color }) => (
-                    <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
+                  {contrastPalette.map(({ name, color, highlight, contrastScore }: Color) => (
+                    <ColorCard
+                      key={name}
+                      color={color}
+                      name={name}
+                      contrastScore={contrastScore}
+                      highlight={highlight}
+                    />
                   ))}
                 </div>
               </div>
