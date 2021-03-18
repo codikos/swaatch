@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useTheme } from 'next-themes';
-import { isEmpty } from 'lodash/fp';
+import { isEmpty, trim } from 'lodash/fp';
 
 import Nav from '@components/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,13 +12,17 @@ import { StateContext } from '@utils/state';
 import { generatePalette } from '@utils/colors';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
+import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
 import { vs, vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ColorCard from '@components/ColorCard';
 import Links from '@components/Links';
 
 SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('json', json);
 
 const paletteOptions = (name: string) => ({ direction: 'both', nbVariation: 6, increment: 5, name });
+
+const stripComma = (str: string) => trim(str).slice(0, -1);
 
 export default function RecapPage() {
   const contentElm = useRef(null);
@@ -31,6 +35,7 @@ export default function RecapPage() {
   const [warning, setWarning] = useState([]);
   const [error, setError] = useState([]);
   const [cssResult, setCSSResult] = useState('');
+  const [jsonResult, setJSONResult] = useState('');
   const router = useRouter();
   const { theme } = useTheme();
 
@@ -59,6 +64,19 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
       !isEmpty(error) ? error.map(({ name, color }) => `\t--${name}: ${color};\n`).join('') : ''
     }
 }`);
+
+    setJSONResult(`{
+    ${stripComma(`
+${primary.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('')}
+${contrast.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('')}
+${brand.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('')}
+${!isEmpty(success) ? success.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('') + '\n' : ''}${
+      !isEmpty(info) ? info.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('') + '\n' : ''
+    }${!isEmpty(warning) ? warning.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('') + '\n' : ''}${
+      !isEmpty(error) ? error.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('') : ''
+    }
+    `)}
+}`);
   }, [primary, contrast, brand, success, info, warning, error]);
 
   const scrollToContent = () => contentElm.current.scrollIntoView();
@@ -66,6 +84,14 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
   const copyCSS = async () => {
     try {
       await navigator.clipboard.writeText(cssResult);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const copyJSON = async () => {
+    try {
+      await navigator.clipboard.writeText(jsonResult);
     } catch (e) {
       console.log(e);
     }
@@ -156,6 +182,17 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
               </button>
               <SyntaxHighlighter id="code" language="css" style={theme === 'light' ? vs : vscDarkPlus} className="m-0">
                 {cssResult}
+              </SyntaxHighlighter>
+            </div>
+            <div className="relative flex flex-col p-2 mx-2 mt-10 bg-gray-200 rounded-md dark:bg-gray-900">
+              <button
+                onClick={copyJSON}
+                className="absolute top-0 right-0 px-4 py-2 m-2 text-sm bg-black rounded-bl-md bg-opacity-30 hover:text-blue-500"
+              >
+                <FontAwesomeIcon icon={faCopy} /> Copy to clipboard
+              </button>
+              <SyntaxHighlighter id="code" language="json" style={theme === 'light' ? vs : vscDarkPlus} className="m-0">
+                {jsonResult}
               </SyntaxHighlighter>
             </div>
           </div>
