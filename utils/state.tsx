@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, createContext } from 'react';
 
 export const initialState = {
   primary: '',
@@ -30,8 +30,8 @@ const reducer = (state: typeof initialState, action: any) => {
   }
 };
 
-export const DispatchContext = React.createContext(null);
-export const StateContext = React.createContext(initialState);
+export const DispatchContext = createContext(null);
+export const StateContext = createContext(initialState);
 
 export const ContextWrapper = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
