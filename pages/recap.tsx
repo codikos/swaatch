@@ -137,38 +137,38 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t"${name}": "${color}",
           </button>
         </div>
         <div className="page-right-container" ref={contentElm}>
-          <div className="flex flex-col justify-center w-auto px-4 py-28 xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start xl:px-10 2xl:px-10">
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+          <div className="flex flex-col justify-center w-auto px-4 space-y-8 py-28 xl:mx-2 xl:justify-start xl:px-10">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {primary.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}
             </div>
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {contrast.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}
             </div>
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {brand.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}
             </div>
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {success.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}
             </div>
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {info.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}
             </div>
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {warning.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}
             </div>
-            <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+            <div className="flex flex-col justify-center xl:flex-row xl:space-y-0 xl:space-x-2 space-y-2">
               {error.map(({ name, color }) => (
                 <ColorCard key={name} name={name} color={color} />
               ))}

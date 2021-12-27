@@ -142,8 +142,8 @@ export default function PrimaryPage() {
           {contrast && (
             <div className="px-4 py-4 xl:px-10 2xl:px-10">
               <div className="mt-10">
-                <h3 className="mx-2 text-3xl font-bold">Primary:</h3>
-                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
+                <h3 className="ext-3xl font-bold">Primary:</h3>
+                <div className="flex flex-col justify-between mt-1 xl:flex-row xl:space-x-2">
                   {hexPalette.map(({ name, color, highlight }: Color) => (
                     <ColorCard key={name} color={color} name={name} highlight={highlight} />
                   ))}
@@ -154,7 +154,7 @@ export default function PrimaryPage() {
                   title="Contrast:"
                   text="All contrast scores are calculated in comparison to the primary base value. The score minimum to be readable is 4.5:1."
                 />
-                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
+                <div className="flex flex-col justify-between mt-1 xl:flex-row xl:space-x-2">
                   {contrastPalette.map(({ name, color, highlight, contrastScore }: Color) => (
                     <ColorCard
                       key={name}

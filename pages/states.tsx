@@ -85,8 +85,8 @@ export default function StatesPage() {
           <p className="mt-5">
             The state colors are used to indicate <strong>success</strong>, <strong>informations</strong>,{' '}
             <strong>warnings</strong> or <strong>failures</strong> and they are usually shades of{' '}
-            <strong className="text-green-600">green</strong>, <strong className="text-blue-600">blue</strong>,{' '}
-            <strong className="text-yellow-600">orange</strong> and <strong className="text-red-600">red</strong>{' '}
+            <strong className="underline decoration-green-600 decoration-4">green</strong>, <strong className="underline decoration-blue-600 decoration-4">blue</strong>,{' '}
+            <strong className="underline decoration-yellow-600 decoration-4">orange</strong> and <strong className="underline decoration-red-600 decoration-4">red</strong>{' '}
             respectively.
           </p>
           <p className="mt-5">
@@ -98,18 +98,18 @@ export default function StatesPage() {
           </button>
         </div>
         <div ref={contentElm} className="page-right-container">
-          <div className="flex flex-col justify-center w-auto px-4 pt-28 xl:mx-2 2xl:mx-2 2xl:justify-start xl:justify-start xl:px-10 2xl:px-10">
+          <div className="flex flex-col justify-center w-auto px-4 pt-28 xl:mx-2 xl:justify-start xl:px-10">
             {Object.values(displayedStates)
               .map(Boolean)
               .includes(true) && (
               <div className="mt-10">
-                <h3 className="mx-2 text-3xl font-bold">State colors</h3>
+                <h3 className=" text-3xl font-bold">State colors</h3>
                 <div className="flex flex-col mt-2">
                   {Object.entries(displayedStates)
                     .filter(([_, color]) => Boolean(color))
                     .map(([state, color]) => (
                       <Fragment key={`${state}-${color}`}>
-                        <h3 className="mx-2 mt-5 text-2xl font-bold capitalize">
+                        <h3 className=" mt-5 text-2xl font-bold capitalize">
                           <label className="">
                             <span className={`mr-2 ${selectedStates[state] ? 'text-blue-500' : ''}`}>
                               <FontAwesomeIcon icon={selectedStates[state] ? faCheckCircle : farCheckCircle} />
@@ -124,7 +124,7 @@ export default function StatesPage() {
                             {state}
                           </label>
                         </h3>
-                        <div className="flex flex-col justify-center mt-2 xl:flex-row 2xl:flex-row">
+                        <div className="flex flex-col justify-center mt-2 xl:flex-row xl:space-x-2">
                           {generatePalette(color, {
                             direction: 'both',
                             nbVariation: 6,
@@ -147,8 +147,8 @@ export default function StatesPage() {
               </div>
             )}
             <div className="mt-10">
-              <h3 className="mx-2 text-3xl font-bold">Reminder</h3>
-              <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
+              <h3 className=" text-3xl font-bold">Reminder</h3>
+              <div className="flex flex-col justify-between mt-1 xl:flex-row xl:space-x-2">
                 <ColorCard color={state.primary} name="Primary" />
                 <ColorCard color={state.contrast} name="Contrast" />
                 <ColorCard color={state.brand} name="Brand" />

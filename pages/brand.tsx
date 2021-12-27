@@ -135,7 +135,7 @@ export default function BrandPage() {
                   title="Brand:"
                   text="All contrast scores are calculated in comparison to the primary base value. The score minimum to be readable is 4.5:1."
                 />
-                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
+                <div className="flex flex-col justify-between mt-1 xl:flex-row xl:space-x-2">
                   {paletteGenerated.map(({ name, color, contrastScore }: Color) => (
                     <ColorCard
                       key={name}
@@ -148,8 +148,8 @@ export default function BrandPage() {
                 </div>
               </div>
               <div className="mt-10">
-                <h3 className="mx-2 mb-5 text-3xl font-bold">Primary:</h3>
-                <div className="flex flex-col justify-between mt-1 xl:flex-row 2xl:flex-row">
+                <h3 className="mb-5 text-3xl font-bold">Primary:</h3>
+                <div className="flex flex-col justify-between mt-1 xl:flex-row xl:space-x-2">
                   {generatePalette(state.primary, { ...paletteOptions, name: 'primary' }).map(({ name, color }) => (
                     <ColorCard key={name} color={color} name={name} highlight={isHighlight(name)} />
                   ))}
