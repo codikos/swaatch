@@ -20,16 +20,16 @@ export default function HelpTitle({ title, text }: HelpTitle) {
 
   return (
     <>
-      <h3 className="flex flex-row items-center mx-2 text-3xl font-bold">
+      <h3 className="flex flex-row items-center text-3xl font-bold">
         {title}
         <span
           onMouseOver={onMouseOver}
           onMouseLeave={onMouseLeave}
-          className="relative ml-2 text-base text-gray-200 cursor-pointer"
+          className="relative ml-2 text-base text-gray-400 dark:text-gray-200 cursor-pointer"
         >
           <FontAwesomeIcon icon={faQuestionCircle} />
           <span
-            className={`z-20 px-4 py-2 ml-2 text-sm text-white bg-black rounded-sm xl:absolute xl:min-w-max xl:top-1/2 xl:transform xl:-translate-y-1/2 xl:left-full ${
+            className={`z-20 px-4 py-2 ml-2 text-sm text-black dark:text-white bg-white dark:bg-black rounded-sm xl:absolute xl:w-96 xl:top-1/2 xl:transform xl:-translate-y-1/2 xl:left-full ${
               isDisplayed ? 'xl:block' : 'hidden'
             }`}
           >
@@ -37,7 +37,7 @@ export default function HelpTitle({ title, text }: HelpTitle) {
           </span>
         </span>
       </h3>
-      <div className="block px-4 py-2 mx-2 my-2 bg-black rounded-sm xl:hidden">{text}</div>
+      <div className="block px-4 py-2 my-2 bg-white dark:bg-black dark:text-white rounded-sm xl:hidden">{text}</div>
     </>
   );
 }

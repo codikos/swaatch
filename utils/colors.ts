@@ -4,7 +4,7 @@ const INCREMENT = 5;
 const MAX_TRIES = 50;
 
 const getContrastScore = (color1: string, color2: string) =>
-  Math.ceil(tinycolor.readability(color1, color2) * 100) / 100;
+  Math.ceil(tinycolor.readability(color1, color2) * 10) / 10;
 
 export const generateContrast = (primary: string) => {
   const primaryTiny = tinycolor(primary);
