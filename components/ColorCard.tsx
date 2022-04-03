@@ -1,3 +1,5 @@
+import React from 'react';
+
 type ColorCardProps = {
   color: string;
   name: string;
@@ -14,9 +16,9 @@ export default function ColorCard({ color, name, highlight, contrastScore }: Col
           : 'bg-white dark:bg-gray-900 text-gray-50 dark:border-gray-700'
       }`}
     >
-    <div className="flex justify-start items-end w-16 h-16 xl:w-full 2xl:w-full xl:h-28 2xl:h-32 xl:bg-gradient-to-t xl:from-black/50 xl:via-transparent xl:to-transparent" style={{ backgroundColor: color }}>
+      <div className="flex justify-start items-end w-16 h-16 xl:w-full 2xl:w-full xl:h-28 2xl:h-32 xl:bg-gradient-to-t xl:from-black/50 xl:via-transparent xl:to-transparent" style={{ backgroundColor: color }}>
         <div className="text-sm ml-1 py-2 hidden xl:block">{name}</div>
-    </div>
+      </div>
       <div className="flex flex-col items-stretch flex-1 px-2 xl:px-0">
         <div className="py-1 xl:py-2 xl:hidden">{name}</div>
         <div className={`xl:px-4 xl:py-2 flex-1 xl:text-center font-bold uppercase ${highlight ? 'text-gray-50' : 'text-gray-900 dark:text-gray-50'}`}>

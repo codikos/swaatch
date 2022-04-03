@@ -1,4 +1,4 @@
-import type { ChangeEvent, FC, FormEvent } from 'react';
+import type { ChangeEvent, FC } from 'react';
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
