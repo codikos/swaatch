@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import React from 'react';
 
 import Nav from '@components/Nav';
 
@@ -28,7 +29,7 @@ export default function IndexPage() {
           <a
             className="text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
             href="https://www.w3.org/WAI/WCAG21/quickref/?currentsidebar=%23col_overview&versions=2.0&showtechniques=143#contrast-minimum"
-            target="_blank"
+            target="_blank" rel="noreferrer"
           >
             recommendations
           </a>
@@ -36,7 +37,7 @@ export default function IndexPage() {
         </h2>
         <div className="flex flex-row mt-10 place-content-center">
           <Link href="/primary">
-            <a className="btn-blue">Let's begin!</a>
+            <a className="btn-blue">Let&apos;s begin!</a>
           </Link>
         </div>
       </div>
