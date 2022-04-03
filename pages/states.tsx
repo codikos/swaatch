@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import tinycolor from 'tinycolor2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -106,7 +106,7 @@ export default function StatesPage() {
                 <h3 className=" text-3xl font-bold">State colors</h3>
                 <div className="flex flex-col mt-2">
                   {Object.entries(displayedStates)
-                    .filter(([_, color]) => Boolean(color))
+                    .filter(([, color]) => Boolean(color))
                     .map(([state, color]) => (
                       <Fragment key={`${state}-${color}`}>
                         <h3 className=" mt-5 text-2xl font-bold capitalize">
@@ -157,7 +157,7 @@ export default function StatesPage() {
           </div>
           <div className="flex flex-col p-10 mt-20 bg-gray-200 dark:bg-gray-700 place-content-center">
             <p className="text-xl text-center">
-              If you like what you're seeing, let's go see what your palette looks like.
+              If you like what you&apos;re seeing, let&apos;s go see what your palette looks like.
             </p>
             <div className="flex mt-10 place-content-center">
               <Link href="/recap">

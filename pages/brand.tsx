@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useRef, useState, useContext, useEffect } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import { isEmpty } from 'lodash/fp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -82,7 +82,7 @@ export default function BrandPage() {
           <h1 className="page-title from-blue-900 to-green-500 dark:from-blue-500 dark:to-green-400">
             Now the color of your brand!
           </h1>
-          <p className="mt-5">It's time to pick your brand color.</p>
+          <p className="mt-5">It&apos;s time to pick your brand color.</p>
           <p className="mt-5">This should be a vivid color, with a high contrast ratio against your primary color.</p>
           <p className="mt-5">
             If your brand color contrast ratio is not high enough for it to be readable we will calculate the nearest

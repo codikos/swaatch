@@ -2,6 +2,7 @@ import { faAngleDoubleLeft, faHome, faMoon, faSun } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import React from 'react';
 
 import ButtonBack from '@components/ButtonBack';
 import LinkIcon from '@components/LinkIcon';

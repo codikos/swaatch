@@ -1,5 +1,6 @@
 import { faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 
 export default function Links() {
   return (
@@ -7,14 +8,14 @@ export default function Links() {
       <a
         className="flex items-center justify-center w-8 h-8 mx-2 text-xl rounded-full outline-none focus:ring-2 focus:ring-gray-700 dark:focus:ring-gray-200"
         target="_blank"
-        href="https://github.com/codikos/swaatch"
+        href="https://github.com/codikos/swaatch" rel="noreferrer"
       >
         <FontAwesomeIcon icon={faGithub} />
       </a>
       <a
         className="flex items-center justify-center w-8 h-8 mx-2 text-xl rounded-full outline-none focus:ring-2 focus:ring-gray-700 dark:focus:ring-gray-200"
         target="_blank"
-        href="https://twitter.com/telllijo"
+        href="https://twitter.com/telllijo" rel="noreferrer"
       >
         <FontAwesomeIcon icon={faTwitter} />
       </a>

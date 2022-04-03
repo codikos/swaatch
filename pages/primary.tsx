@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useContext, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 
 import Nav from '@components/Nav';
 import ColorCard from '@components/ColorCard';
@@ -45,7 +45,7 @@ export default function PrimaryPage() {
     }
   }, []);
 
-  const onClickGenerate = (e: any) => {
+  const onClickGenerate = (e: FormEvent) => {
     e.preventDefault();
     setError('');
     try {

@@ -1,7 +1,13 @@
+import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import React from 'react';
 
-class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+type DocumentProps = {
+  isProduction: boolean
+}
+
+class MyDocument extends Document<DocumentProps> {
+  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps & DocumentProps> {
     const initialProps = await Document.getInitialProps(ctx);
     const isProduction = process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production';
     return { ...initialProps, isProduction };
