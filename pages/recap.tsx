@@ -8,7 +8,7 @@ import { isEmpty, trim, camelCase } from 'lodash/fp';
 
 import Nav from '@components/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { StateContext } from '@utils/state';
 import { generatePalette } from '@utils/colors';
@@ -34,17 +34,22 @@ type OutputProps = {
   onCopy: () => void;
   output: string;
   language: Output;
+  isCopying: boolean;
+  isCopied: boolean;
 }
-const Output: FC<OutputProps> = ({ onCopy, output, language }) => {
+const Output: FC<OutputProps> = ({ onCopy, output, language, isCopying, isCopied }) => {
   const { theme } = useTheme();
   
   return (
     <div className="relative flex flex-col p-2 mt-10 bg-gray-200 rounded-md dark:bg-gray-900">
       <button
         onClick={onCopy}
-        className="absolute top-0 right-0 px-4 py-2 m-2 text-sm bg-black rounded-bl-md bg-opacity-30 hover:text-blue-500"
+        className={`absolute top-0 right-0 px-4 py-2 m-2 space-x-2 text-sm bg-black rounded-bl-md ${isCopying || isCopied ? 'text-blue-500' : ''} bg-opacity-30 hover:text-blue-500`}
       >
-        <FontAwesomeIcon icon={faCopy} /> Copy to clipboard
+        {isCopying && !isCopied && <FontAwesomeIcon icon={faSpinner} spin />}
+        {!isCopying && isCopied && <FontAwesomeIcon icon={faCheck} />}
+        {!isCopying && !isCopied && <FontAwesomeIcon icon={faCopy} />}
+        <span>Copy to clipboard</span>
       </button>
       <SyntaxHighlighter id="code" language={language} 
         style={theme === 'light' ? vs : vscDarkPlus} className="m-0">
@@ -66,6 +71,8 @@ export default function RecapPage() {
   const [info, setInfo] = useState([]);
   const [warning, setWarning] = useState([]);
   const [error, setError] = useState([]);
+  const [isCopying, setIsCopying] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [output, setOutput] = useState<Output | undefined>();
   const [selectedOutput, setSelectedOutput] = useState('');
 
@@ -138,7 +145,11 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t${camelCase(name)}: '$
 
   const onCopy = async (): Promise<void> => {
     try {
+      setIsCopying(true);
       await navigator.clipboard.writeText(selectedOutput);
+      setIsCopying(false);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     }catch(e) {
       console.log(e);
     }
@@ -238,7 +249,7 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t${camelCase(name)}: '$
                   <option value="js">JavaScript</option>
                 </select>
               </div>
-              {output && <Output language="css" output={selectedOutput} onCopy={onCopy} />}
+              {output && <Output isCopying={isCopying} isCopied={isCopied} language="css" output={selectedOutput} onCopy={onCopy} />}
             </div>
             {/* -- END Output -- */}
           </div>
