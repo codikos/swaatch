@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useTheme } from 'next-themes';
-import { isEmpty, trim } from 'lodash/fp';
+import { isEmpty, trim, camelCase } from 'lodash/fp';
 
 import Nav from '@components/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,22 +15,27 @@ import { generatePalette } from '@utils/colors';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
 import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
+import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
 import { vs, vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ColorCard from '@components/ColorCard';
 import Links from '@components/Links';
 
 SyntaxHighlighter.registerLanguage('css', css);
 SyntaxHighlighter.registerLanguage('json', json);
+SyntaxHighlighter.registerLanguage('js', js);
 
 const paletteOptions = (name: string) => ({ direction: 'both', nbVariation: 6, increment: 5, name });
 
 const stripComma = (str: string) => trim(str).slice(0, -1);
 
+type Output = 'css' | 'json' | 'js';
+
 type OutputProps = {
   onCopy: () => void;
   output: string;
+  language: Output;
 }
-const Output: FC<OutputProps> = ({onCopy, output}) => {
+const Output: FC<OutputProps> = ({ onCopy, output, language }) => {
   const { theme } = useTheme();
   
   return (
@@ -41,14 +46,13 @@ const Output: FC<OutputProps> = ({onCopy, output}) => {
       >
         <FontAwesomeIcon icon={faCopy} /> Copy to clipboard
       </button>
-      <SyntaxHighlighter id="code" language="css" style={theme === 'light' ? vs : vscDarkPlus} className="m-0">
+      <SyntaxHighlighter id="code" language={language} 
+        style={theme === 'light' ? vs : vscDarkPlus} className="m-0">
         {output}
       </SyntaxHighlighter>
     </div>
   );
 };
-
-type Output = 'css' | 'json';
 
 export default function RecapPage() {
   const contentElm = useRef(null);
@@ -62,9 +66,8 @@ export default function RecapPage() {
   const [info, setInfo] = useState([]);
   const [warning, setWarning] = useState([]);
   const [error, setError] = useState([]);
-  const [cssResult, setCSSResult] = useState('');
-  const [jsonResult, setJSONResult] = useState('');
-  const [output, setOutput] = useState<Output>('css');
+  const [output, setOutput] = useState<Output | undefined>();
+  const [selectedOutput, setSelectedOutput] = useState('');
 
   const router = useRouter();
 
@@ -83,8 +86,12 @@ export default function RecapPage() {
     state.states.error && setError(generatePalette(state.states.error, paletteOptions('error')));
   }, []);
 
-  useEffect(() => {
-    setCSSResult(`:root {
+  const scrollToContent = () => contentElm.current.scrollIntoView();
+
+  const onChangeOutput = ({target: {value}}: ChangeEvent<HTMLSelectElement>) => {
+    setOutput(value as Output);
+    if (value === 'css') {
+      setSelectedOutput(`:root {
     ${trim(`
 ${primary.map(({ name, color }) => `\t--${name}: ${color};\n`).join('')}
 ${contrast.map(({ name, color }) => `\t--${name}: ${color};\n`).join('')}
@@ -96,8 +103,10 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t--${name}: ${color};\n
 }
 `)}
 }`);
+    }
 
-    setJSONResult(`{
+    if (value === 'json') {
+      setSelectedOutput(`{
     ${stripComma(`
 ${primary.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('')}
 ${contrast.map(({ name, color }) => `\t"${name}": "${color}",\n`).join('')}
@@ -109,22 +118,28 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t"${name}": "${color}",
 }
 `)}
 }`);
-  }, [primary, contrast, brand, success, info, warning, error]);
+    }
 
-  const scrollToContent = () => contentElm.current.scrollIntoView();
-
-  const copyCSS = async () => {
-    try {
-      await navigator.clipboard.writeText(cssResult);
-    } catch (e) {
-      console.log(e);
+    if (value === 'js') {
+      setSelectedOutput(`module.exports = {
+    ${trim(`
+${primary.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('')}
+${contrast.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('')}
+${brand.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('')}
+${!isEmpty(success) ? success.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('') + '\n' : ''}${
+  !isEmpty(info) ? info.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('') + '\n' : ''
+}${!isEmpty(warning) ? warning.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('') + '\n' : ''}${
+  !isEmpty(error) ? error.map(({ name, color }) => `\t${camelCase(name)}: '${color}',\n`).join('') : ''
+}
+`)}
+};`);
     }
   };
 
-  const copyJSON = async () => {
+  const onCopy = async (): Promise<void> => {
     try {
-      await navigator.clipboard.writeText(jsonResult);
-    } catch (e) {
+      await navigator.clipboard.writeText(selectedOutput);
+    }catch(e) {
       console.log(e);
     }
   };
@@ -214,14 +229,16 @@ ${!isEmpty(success) ? success.map(({ name, color }) => `\t"${name}": "${color}",
                   id="output"
                   name="output"
                   className={`${theme === 'light' ? 'text-gray-900 bg-white border-gray-300' : 'text-gray-100 bg-gray-900 border-gray-700'} mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md`}
-                  onChange={({target: {value}}: ChangeEvent<HTMLSelectElement>) => setOutput(value as Output)}
+                  onChange={onChangeOutput}
+                  value={output}
                 >
+                  <option value=""></option>
                   <option value="css">CSS</option>
                   <option value="json">JSON</option>
+                  <option value="js">JavaScript</option>
                 </select>
               </div>
-              {output === 'css' && <Output output={cssResult} onCopy={copyCSS} />}
-              {output === 'json' && <Output output={jsonResult} onCopy={copyJSON} />}
+              {output && <Output language="css" output={selectedOutput} onCopy={onCopy} />}
             </div>
             {/* -- END Output -- */}
           </div>
