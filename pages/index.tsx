@@ -37,7 +37,7 @@ export default function IndexPage() {
         </h2>
         <div className="flex flex-row mt-10 place-content-center">
           <Link href="/primary">
-            <a className="btn-blue">Let&apos;s begin!</a>
+            <a className="btn-blue uppercase tracking-wider">Let&apos;s begin!</a>
           </Link>
         </div>
       </div>

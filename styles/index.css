@@ -40,7 +40,7 @@
   }
 
   .btn-blue {
-    @apply px-4 py-2 font-bold text-white bg-blue-600 rounded;
+    @apply px-4 py-2 font-bold text-teal-900 dark:text-teal-50 bg-teal-300 dark:bg-teal-700 rounded;
   }
 
   .btn-blue[disabled] {
@@ -52,11 +52,7 @@
   }
 
   .btn-nav {
-    @apply flex items-center justify-center w-10 h-10 mr-2 text-gray-700 no-underline rounded-full cursor-pointer lg:px-4 transition text-accent-1 min-w-max dark:text-gray-200;
-  }
-
-  .btn-nav:hover {
-    @apply bg-gray-200 dark:bg-gray-700;
+    @apply flex flex-row items-center space-x-2 text-xs text-gray-700 no-underline rounded-full cursor-pointer py-2 px-3 transition duration-300 ease-in min-w-max dark:text-gray-200 uppercase tracking-wider hover:bg-teal-300 dark:hover:bg-teal-700;
   }
 
   .btn-nav:focus {
@@ -64,11 +60,7 @@
   }
 
   .btn-nav-circle {
-    @apply flex items-center justify-center mr-4 text-gray-700 no-underline rounded-full cursor-pointer transition text-accent-1 h-14 w-14 dark:text-gray-200;
-  }
-
-  .btn-nav-circle:hover {
-    @apply bg-gray-200 dark:bg-gray-700;
+    @apply flex items-center justify-center mr-4 text-gray-700 no-underline rounded-full cursor-pointer transition text-accent-1 h-10 w-10 dark:text-gray-200 hover:bg-teal-300 dark:hover:bg-teal-700 transition duration-300 ease-in;
   }
 
   .btn-nav-circle:focus {
