@@ -44,7 +44,7 @@ const Output: FC<OutputProps> = ({ onCopy, output, language, isCopying, isCopied
     <div className="relative flex flex-col p-2 mt-10 bg-gray-200 rounded-md dark:bg-gray-900">
       <button
         onClick={onCopy}
-        className={`absolute top-0 right-0 px-4 py-2 m-2 space-x-2 text-sm bg-black rounded-bl-md ${isCopying || isCopied ? 'text-blue-500' : ''} bg-opacity-30 hover:text-blue-500`}
+        className="absolute top-0 right-0 px-4 py-2 m-2 space-x-2 text-sm text-teal-900 dark:text-teal-50 bg-teal-300 dark:bg-teal-700 rounded-bl-md hover:bg-teal-400 dark:hover:bg-teal-800 transition duration-400 ease-in"
       >
         {isCopying && !isCopied && <FontAwesomeIcon icon={faSpinner} spin />}
         {!isCopying && isCopied && <FontAwesomeIcon icon={faCheck} />}

@@ -8,7 +8,7 @@ export default function ButtonBack() {
   return (
     <a onClick={() => router.back()} tabIndex={0} title="Previous Step" className="btn-nav">
       <FontAwesomeIcon icon={faAngleLeft} />
-      <span className="hidden ml-2 sm:hidden md:hidden lg:inline xl:inline 2xl:inline">Previous Step</span>
+      <span className="hidden lg:block">Previous Step</span>
     </a>
   );
 }
